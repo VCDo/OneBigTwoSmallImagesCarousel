@@ -13,13 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
@@ -32,11 +29,10 @@ import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 @Composable
 fun OBTSICarousel(
     modifier: Modifier = Modifier,
-    bitmaps: List<Bitmap>
+    bitmaps: List<Bitmap>,
+    onItemClick: (index: Int) -> Unit = {}
 ) {
     if (bitmaps.isEmpty()) return
-
-    var selectedBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     val chunkedBitmaps = remember(bitmaps) {
         val chunkList = mutableListOf<List<Bitmap>>()
@@ -65,13 +61,13 @@ fun OBTSICarousel(
             bottom = 12.dp
         )
     ) {
-        items(chunkedBitmaps) { row ->
+        itemsIndexed(chunkedBitmaps) { index, row ->
             if (row.size == 1) {
                 Box(modifier = Modifier.fillMaxHeight()) {
                     HorizontalBitmapItem(
                         bitmap = row[0],
                         modifier = Modifier.fillMaxHeight()
-                    ) { selectedBitmap = it }
+                    ) { onItemClick(index) }
                 }
             } else {
                 Column(modifier = Modifier.fillMaxHeight()) {
@@ -79,20 +75,20 @@ fun OBTSICarousel(
                         HorizontalBitmapItem(
                             bitmap = bitmap,
                             modifier = Modifier.weight(0.5f)
-                        ) { selectedBitmap = it }
+                        ) { onItemClick(index) }
                     }
                 }
             }
         }
     }
-    /*
-        selectedBitmap?.let { bitmap ->
-            FullScreenImageDialog(bitmap) { selectedBitmap = null }
-        }*/
 }
 
 @Composable
-fun HorizontalBitmapItem(bitmap: Bitmap, modifier: Modifier, onClick: (Bitmap) -> Unit) {
+fun HorizontalBitmapItem(
+    bitmap: Bitmap,
+    modifier: Modifier,
+    onClick: (Bitmap) -> Unit
+) {
     Box(
         modifier = modifier
             .aspectRatio(1f)

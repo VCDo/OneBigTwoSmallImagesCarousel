@@ -1,7 +1,9 @@
 package de.darkovukic.android.onebigtwosmallimagescarousel.sample
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -46,6 +49,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Content(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,12 +71,28 @@ fun Content(modifier: Modifier = Modifier) {
                     index = it
                 )
             }
-        )
+        ) {
+            showClickedOnMessage(
+                context = context,
+                itemNumber = it + 1
+            )
+        }
         Text(
             text = stringResource(R.string.swipe_left_to_see_more),
             modifier = Modifier.padding(16.dp)
         )
     }
+}
+
+private fun showClickedOnMessage(context: Context, itemNumber: Int) {
+    Toast.makeText(
+        context,
+        context.getString(
+            R.string.clicked_on_image,
+            itemNumber.toString()
+        ),
+        Toast.LENGTH_SHORT
+    ).show()
 }
 
 @Preview(
