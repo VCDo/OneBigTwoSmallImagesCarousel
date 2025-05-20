@@ -28,3 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added on-click listener to OBTSICarousel.
 - Show message when clicking on OBTSICarousel item in sample app.
+
+## [0.1.3] - 2025-05-20
+
+### Fixed
+- Wrong index returned when clicking on OBTSICarousel item.
+
+### Changed
+- README files were updated.
