@@ -1,3 +1,4 @@
+group = "de.darkovukic"
 version = "0.1.0"
 
 plugins {
