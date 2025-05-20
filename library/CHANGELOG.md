@@ -14,3 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added initial version.
+
+## [0.1.1] - 2025-05-20
+
+### Changed
+- Changed Group ID to 'de.darkovukic'
+
+### Added
+- Added initial library's readme file.
