@@ -19,10 +19,23 @@ image carousel that displays one large image followed by two small images in a r
 Once the library is more stable and published, the installation will likely look like this:
 
 1.  **Add JitPack to your root `build.gradle.kts` (or `settings.gradle.kts`):**
-    kotlin // settings.gradle.kts dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS) repositories { google() mavenCentral() maven { url = uri("https://jitpack.io") } } }
+```kotlin
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
 2.  **Add the dependency to your module's `build.gradle.kts`:**
-    kotlin dependencies { // implementation("de.darkovukic:OneBigTwoSmallImagesCarousel:VERSION_HERE") // Replace VERSION_HERE with the actual version tag (e.g., v1.0.0) }
-    (You will then find the current releases on the [Releases page](https://github.com/VCDo/OneBigTwoSmallImagesCarousel/releases) of this repository.)
+```kotlin
+dependencies {
+    implementation("com.github.VCDo:OneBigTwoSmallImagesCarousel:VERSION_HERE") // Replace VERSION_HERE with the actual version tag (e.g., v1.0.0)
+}
+```
+(You will then find the current releases on the [Releases page](https://github.com/VCDo/OneBigTwoSmallImagesCarousel/releases) of this repository.)
 
 **Note:** As the project is not yet published, this step is currently not applicable. 
 For local testing, you can include the `:library` module directly as a project dependency in your
