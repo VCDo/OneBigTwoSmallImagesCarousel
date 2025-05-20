@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OBTSI Carousel Sample App</string>
+    <string name="this_project_demonstrates">This project demonstrates the \'OneBigTwoSmallImagesCarousel\' library</string>
+    <string name="swipe_left_to_see_more">Swipe left to see more</string>
+</resources>

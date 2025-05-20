@@ -1,0 +1,46 @@
+# Built application files
+*.apk
+*.aab
+*.ap_
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Scoped directory project files
+.gradle/
+build/
+
+# Local configuration files (sdk path, etc)
+local.properties
+
+# Log files
+*.log
+
+# Android Studio Navigation editor files
+.navigation/
+
+# Android Studio captures folder
+captures/
+
+# Kotlin folder
+.kotlin/
+
+# IntelliJ
+*.iml
+.idea
+
+# Keystore files
+*.jks
+*.keystore
+
+# External native build folder generated in Android Studio 2.2 and later
+.cxx/
+
+# Google Services (e.g. Google Sign-In)
+google-services.json
+
+# Secrets (API keys, etc) - Consider using a more robust secrets management strategy
+secrets.properties
