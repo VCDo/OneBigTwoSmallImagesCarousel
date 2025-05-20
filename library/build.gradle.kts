@@ -1,4 +1,3 @@
-group = "de.darkovukic"
 version = "0.1.2"
 
 plugins {
