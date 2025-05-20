@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -52,6 +52,7 @@ fun OBTSICarousel(
         chunkList
     }
 
+    var currentBitmapIndex = 0
     LazyRow(
         modifier = modifier,
         contentPadding = PaddingValues(
@@ -61,23 +62,27 @@ fun OBTSICarousel(
             bottom = 12.dp
         )
     ) {
-        itemsIndexed(chunkedBitmaps) { index, row ->
+        items(chunkedBitmaps) { row ->
             if (row.size == 1) {
                 Box(modifier = Modifier.fillMaxHeight()) {
+                    val originalIndex = currentBitmapIndex
                     HorizontalBitmapItem(
                         bitmap = row[0],
                         modifier = Modifier.fillMaxHeight()
-                    ) { onItemClick(index) }
+                    ) { onItemClick(originalIndex) }
                 }
+                currentBitmapIndex += 1
             } else {
                 Column(modifier = Modifier.fillMaxHeight()) {
-                    row.forEach { bitmap ->
+                    row.forEachIndexed { itemInRowIndex, bitmap ->
+                        val originalIndex = currentBitmapIndex + itemInRowIndex
                         HorizontalBitmapItem(
                             bitmap = bitmap,
                             modifier = Modifier.weight(0.5f)
-                        ) { onItemClick(index) }
+                        ) { onItemClick(originalIndex) }
                     }
                 }
+                currentBitmapIndex += 2
             }
         }
     }
