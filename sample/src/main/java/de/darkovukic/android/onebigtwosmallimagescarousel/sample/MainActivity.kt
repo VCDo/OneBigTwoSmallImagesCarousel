@@ -113,7 +113,7 @@ private fun showClickedOnMessage(context: Context, itemNumber: Int) {
     apiLevel = 34
 )
 @Composable
-fun GreetingPreview() {
+fun ContentPreview() {
     OneBigTwoSmallImagesCarouselTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Content(
