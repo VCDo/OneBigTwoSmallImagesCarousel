@@ -1,4 +1,10 @@
 # OneBigTwoSmallImagesCarousel
+[![](https://jitpack.io/v/VCDo/OneBigTwoSmallImagesCarousel.svg)](https://jitpack.io/#VCDo/OneBigTwoSmallImagesCarousel)
+
+<p align="center">
+  <img src="sample/screenshots/start.png" width="236" alt="Screenshot 1 of OBTSICarousel's sample app">
+  <img src="sample/screenshots/end.png" width="236" alt="Screenshot 2 of OBTSICarousel's sample app">
+</p>
 
 **⚠️ Warning: This project is currently in an early stage of development and is not yet ready for
 production use or as a stable library. ⚠️**
