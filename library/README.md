@@ -113,11 +113,23 @@ fun MyScreenWithCarousel() {
         // Padding around the content
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
 
-        // Padding around each individual image
+        // Padding around each item
         itemPadding = 6.dp,
 
-        // Shape for clipping each image
-        itemShape = RoundedCornerShape(12.dp)
+        // Spacing between items
+        itemArrangement = Arrangement.spacedBy(8.dp),
+
+        // Shape for clipping each item
+        itemShape = RoundedCornerShape(12.dp),
+
+        // Content scale for each image
+        itemContentScale = ContentScale.Fit,
+
+        // Background color for each item
+        itemBackgroundColor = Color.White,
+
+        // Border stroke for each item
+        itemBorderStroke = BorderStroke(1.dp, Color.LightGray)
     )
 }
 ```
@@ -129,7 +141,11 @@ fun MyScreenWithCarousel() {
 *   `imageContentDescription`: A lambda that provides a content description for each image.
 *   `contentPadding`: (Optional) `PaddingValues` for the internal `LazyRow` that holds the carousel items. Defaults to `PaddingValues(all = 12.dp)`.
 *   `itemPadding`: (Optional) `Dp` value for padding applied around each individual image within its designated space. Defaults to `4.dp`.
+*   `itemAttangement`: (Optional) `Arrangement` for the internal `LazyRow` that holds the carousel items. Defaults to `Arrangement.spacedBy(0.dp)`.
 *   `itemShape`: (Optional) `Shape` used to clip each individual image. Defaults to `RoundedCornerShape(8.dp)`.
+*   `itemContentScale`: (Optional) `ContentScale` applied to each image. Defaults to `ContentScale.Crop`.
+*   `itemBackgroundColor`: (Optional) `Color` used to paint the background of each image. Defaults to `Color.Gray`.
+*   `itemBorderStroke`: (Optional) `BorderStroke` applied to each image. Defaults to `BorderStroke(0.dp, Color.Transparent)`.
 *   `onItemClick`: (Optional) Lambda `(index: Int) -> Unit` that is invoked when an image in the carousel is clicked. The `index` corresponds to the position in the original `bitmaps` list. Defaults to an empty lambda.
 
 ## License

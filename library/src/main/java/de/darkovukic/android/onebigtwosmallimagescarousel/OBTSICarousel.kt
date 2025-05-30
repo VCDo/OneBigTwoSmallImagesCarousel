@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -45,8 +46,15 @@ import androidx.compose.ui.unit.dp
  * @param contentPadding [PaddingValues] to apply around the content of the underlying `LazyRow`.
  *            Defaults to `PaddingValues(all = 12.dp)`.
  * @param itemPadding Padding to apply around each individual image item. Defaults to `4.dp`.
+ * @param itemArrangement Arrangement of the individual image items. Defaults to `spacedBy(0.dp)`.
  * @param itemShape The [Shape] used to clip each individual image item.
  *            Defaults to `RoundedCornerShape(8.dp)`.
+ * @param itemContentScale The [ContentScale] to apply to the images.
+ *            Defaults to `ContentScale.Crop`.
+ * @param itemBackgroundColor The background color to apply to the images.
+ *            Defaults to `Color.Gray`.
+ * @param itemBorderStroke The [BorderStroke] to apply to the images.
+ *            Defaults to `BorderStroke(0.dp, Color.Transparent)`.
  * @param onItemClick A lambda that is invoked when an image in the carousel is clicked.
  *            It receives the index of the clicked image from the original [images] list.
  *            Defaults to an empty lambda.
@@ -58,7 +66,11 @@ fun OBTSICarousel(
     imageContentDescription: (index: Int, bitmap: Bitmap) -> String?,
     contentPadding: PaddingValues = PaddingValues(all = 12.dp),
     itemPadding: Dp = 4.dp,
+    itemArrangement: Arrangement.Horizontal = Arrangement.spacedBy(0.dp),
     itemShape: Shape = RoundedCornerShape(8.dp),
+    itemContentScale: ContentScale = ContentScale.Crop,
+    itemBackgroundColor: Color = Color.Gray,
+    itemBorderStroke: BorderStroke = BorderStroke(0.dp, Color.Transparent),
     onItemClick: (index: Int) -> Unit = {}
 ) {
     if (images.isEmpty()) return
@@ -83,7 +95,8 @@ fun OBTSICarousel(
 
     LazyRow(
         modifier = modifier,
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
+        horizontalArrangement = itemArrangement
     ) {
         itemsIndexed(chunkedBitmaps) { chunkIndex, row ->
             // Calculate the start index for this chunk
@@ -99,10 +112,16 @@ fun OBTSICarousel(
                 Box(modifier = Modifier.fillMaxHeight()) {
                     CarouselItem(
                         bitmap = row[0],
-                        contentDescription = imageContentDescription(startIndexForThisChunk, row[0]),
+                        contentDescription = imageContentDescription(
+                            startIndexForThisChunk,
+                            row[0]
+                        ),
                         modifier = Modifier.fillMaxHeight(),
                         padding = itemPadding,
-                        shape = itemShape
+                        shape = itemShape,
+                        contentScale = itemContentScale,
+                        backgroundColor = itemBackgroundColor,
+                        borderStroke = itemBorderStroke
                     ) { onItemClick(startIndexForThisChunk) }
                 }
             } else {
@@ -118,7 +137,10 @@ fun OBTSICarousel(
                             contentDescription = imageContentDescription(originalIndex, bitmap),
                             modifier = Modifier.weight(1f),
                             padding = itemPadding,
-                            shape = itemShape
+                            shape = itemShape,
+                            contentScale = itemContentScale,
+                            backgroundColor = itemBackgroundColor,
+                            borderStroke = itemBorderStroke
                         ) { onItemClick(originalIndex) }
                     }
                 }
@@ -134,19 +156,24 @@ internal fun CarouselItem(
     contentDescription: String?,
     padding: Dp,
     shape: Shape,
-    onClick: (Bitmap) -> Unit
+    contentScale: ContentScale,
+    backgroundColor: Color,
+    borderStroke: BorderStroke,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .padding(padding)
             .clip(shape)
-            .clickable { onClick(bitmap) }
+            .background(backgroundColor)
+            .border(border = borderStroke, shape = shape)
+            .clickable { onClick() }
     ) {
         Image(
             bitmap = bitmap.asImageBitmap(),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
+            contentScale = contentScale,
             modifier = Modifier.fillMaxSize()
         )
     }
