@@ -18,7 +18,8 @@ repeating pattern:
 
 - Built entirely with Jetpack Compose
 - Horizontally scrollable layout
-- Customizable image sizes, spacing, and corner radius
+- Customizable base layout thru Modifier
+- Customizable image padding and shape
 - Designed for any number of images (automatically batches them in the pattern: 1 large + 2 small)
 
 ## Installation
