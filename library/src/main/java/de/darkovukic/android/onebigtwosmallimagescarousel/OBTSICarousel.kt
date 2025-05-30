@@ -87,7 +87,7 @@ fun OBTSICarousel(
             if (row.size == 1) {
                 Box(modifier = Modifier.fillMaxHeight()) {
                     val originalIndex = currentBitmapIndex
-                    HorizontalBitmapItem(
+                    CarouselItem(
                         bitmap = row[0],
                         modifier = Modifier.fillMaxHeight(),
                         padding = itemPadding,
@@ -99,7 +99,7 @@ fun OBTSICarousel(
                 Column(modifier = Modifier.fillMaxHeight()) {
                     row.forEachIndexed { itemInRowIndex, bitmap ->
                         val originalIndex = currentBitmapIndex + itemInRowIndex
-                        HorizontalBitmapItem(
+                        CarouselItem(
                             bitmap = bitmap,
                             modifier = Modifier.weight(0.5f),
                             padding = itemPadding,
@@ -114,7 +114,7 @@ fun OBTSICarousel(
 }
 
 @Composable
-fun HorizontalBitmapItem(
+fun CarouselItem(
     bitmap: Bitmap,
     modifier: Modifier,
     padding: Dp,
