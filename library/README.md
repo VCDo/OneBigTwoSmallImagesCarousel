@@ -15,6 +15,11 @@ repeating pattern:
 - 2 small stacked images
 - …
 
+Here some previews:
+<p align="center">
+  <img src="screenshots/previews.png" alt="Screenshot 1 of OBTSICarousel's sample app">
+</p>
+
 ## Features
 
 - Built entirely with Jetpack Compose
