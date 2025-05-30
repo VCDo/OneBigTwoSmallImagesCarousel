@@ -1,4 +1,5 @@
 # OneBigTwoSmallImagesCarousel
+[![](https://jitpack.io/v/VCDo/OneBigTwoSmallImagesCarousel.svg)](https://jitpack.io/#VCDo/OneBigTwoSmallImagesCarousel)
 
 **⚠️ Warning: This project is currently in an early stage of development and is not yet ready for
 production use or as a stable library. ⚠️**
