@@ -51,6 +51,76 @@ Replace `<latest-version>` with the latest release tag (e.g., `1.0.0`).
 For local testing, you can include the `:library` module directly as a project dependency in your
 sample app: `implementation(project(":library"))`.
 
+## Usage
+
+Here's a basic example of how to use `OBTSICarousel` in your Composable function. First, make sure
+you have a list of `Bitmap` objects ready.
+```kotlin
+import android.content.Context
+import android.graphics.Bitmap
+import android.widget.Toast
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+// Import OBTSICarousel Composable
+import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
+// Import BitmapHelpers for generating sample Bitmaps
+// (replace with your actual bitmap loading logic)
+import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
+
+@Composable
+fun MyScreenWithCarousel() {
+    
+    // 1. Prepare your list of Bitmaps
+    // In a real application, you would load these from your ViewModel,
+    // local storage, network, etc.
+    val imageBitmaps: List<Bitmap> = remember {
+        // Example: 9 images
+        List(9) {
+            BitmapHelpers.generateSampleBitmap(
+                width = 200,
+                height = 100,
+                index = it
+            )
+        }
+    }
+
+    if (imageBitmaps.isEmpty()) {
+        // Handle empty state if necessary
+        // Text("No images to display.")
+        return
+    }
+
+    // 2. Use the OBTSICarousel Composable
+    OBTSICarousel(
+        modifier = Modifier.height(300.dp), // Set a height for the carousel
+        bitmaps = imageBitmaps,
+        onItemClick = { index ->
+            // Handle item click, 'index' is the index in your original 'bitmaps' list
+            Toast.makeText(context, "Clicked on image at index: $index", Toast.LENGTH_SHORT).show()
+            // You can use this index to, for example, open a full-screen view of imageBitmaps[index]
+        },
+        // Optional Styling:
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        ItemPadding = 6.dp, // Padding around each individual image
+        ItemShape = RoundedCornerShape(12.dp) // Shape for clipping each image
+    )
+}
+```
+
+### Parameters
+
+*   `modifier`: (Optional) Standard Jetpack Compose `Modifier` to be applied to the root of the `OBTSICarousel`. Defaults to `Modifier`.
+*   `bitmaps`: A `List<Bitmap>` of images to display in the carousel. This is a required parameter.
+*   `contentPadding`: (Optional) `PaddingValues` for the internal `LazyRow` that holds the carousel items. Defaults to `PaddingValues(all = 12.dp)`.
+*   `itemPadding`: (Optional) `Dp` value for padding applied around each individual image within its designated space. Defaults to `4.dp`.
+*   `itemShape`: (Optional) `Shape` used to clip each individual image. Defaults to `RoundedCornerShape(8.dp)`.
+*   `onItemClick`: (Optional) Lambda `(index: Int) -> Unit` that is invoked when an image in the carousel is clicked. The `index` corresponds to the position in the original `bitmaps` list. Defaults to an empty lambda.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
