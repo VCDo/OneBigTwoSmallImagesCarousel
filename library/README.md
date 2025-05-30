@@ -70,7 +70,6 @@ import androidx.compose.ui.unit.dp
 // Import OBTSICarousel Composable
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
 // Import BitmapHelpers for generating sample Bitmaps
-// (replace with your actual bitmap loading logic)
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
 @Composable
@@ -79,13 +78,9 @@ fun MyScreenWithCarousel() {
     // In a real application, you would load these from your ViewModel,
     // local storage, network, etc.
     val imageBitmaps: List<Bitmap> = remember {
-        // Example: 9 images
+        // Example with 9 images
         List(9) {
-            BitmapHelpers.generateSampleBitmap(
-                width = 200,
-                height = 100,
-                index = it
-            )
+            BitmapHelpers.generateSampleBitmap(width = 200, height = 100, index = it)
         }
     }
 
@@ -97,17 +92,32 @@ fun MyScreenWithCarousel() {
 
     // 2. Use the OBTSICarousel Composable
     OBTSICarousel(
-        modifier = Modifier.height(300.dp), // Set a height for the carousel
-        bitmaps = imageBitmaps,
+        // >>> Required:
+
+        // Set a height for the carousel
+        modifier = Modifier.height(300.dp),
+        
+        // The list of images to display
+        images = imageBitmaps,
+        
+        // Lambda for handling image content descriptions
+        imageContentDescription = { index, _ -> "Image at index: $index" },
+        
+        // Callback when an image is clicked
         onItemClick = {
             // Handle item click, 'it' is the index in your original 'bitmaps' list
-            Toast.makeText(context, "Clicked on image at index: $it", Toast.LENGTH_SHORT).show()
-            // You can use this index to, for example, open a full-screen view of imageBitmaps[it]
         },
-        // Optional Styling:
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp), // Padding around the content
-        itemPadding = 6.dp, // Padding around each individual image
-        itemShape = RoundedCornerShape(12.dp) // Shape for clipping each image
+        
+        // >>> Optional Styling:
+
+        // Padding around the content
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+
+        // Padding around each individual image
+        itemPadding = 6.dp,
+
+        // Shape for clipping each image
+        itemShape = RoundedCornerShape(12.dp)
     )
 }
 ```
@@ -115,7 +125,8 @@ fun MyScreenWithCarousel() {
 ### Parameters
 
 *   `modifier`: (Optional) Standard Jetpack Compose `Modifier` to be applied to the root of the `OBTSICarousel`. Defaults to `Modifier`.
-*   `bitmaps`: A `List<Bitmap>` of images to display in the carousel. This is a required parameter.
+*   `images`: A `List<Bitmap>` of images to display in the carousel. This is a required parameter.
+*   `imageContentDescription`: A lambda that provides a content description for each image.
 *   `contentPadding`: (Optional) `PaddingValues` for the internal `LazyRow` that holds the carousel items. Defaults to `PaddingValues(all = 12.dp)`.
 *   `itemPadding`: (Optional) `Dp` value for padding applied around each individual image within its designated space. Defaults to `4.dp`.
 *   `itemShape`: (Optional) `Shape` used to clip each individual image. Defaults to `RoundedCornerShape(8.dp)`.
