@@ -74,7 +74,6 @@ import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
 @Composable
 fun MyScreenWithCarousel() {
-    
     // 1. Prepare your list of Bitmaps
     // In a real application, you would load these from your ViewModel,
     // local storage, network, etc.
@@ -99,15 +98,15 @@ fun MyScreenWithCarousel() {
     OBTSICarousel(
         modifier = Modifier.height(300.dp), // Set a height for the carousel
         bitmaps = imageBitmaps,
-        onItemClick = { index ->
-            // Handle item click, 'index' is the index in your original 'bitmaps' list
-            Toast.makeText(context, "Clicked on image at index: $index", Toast.LENGTH_SHORT).show()
-            // You can use this index to, for example, open a full-screen view of imageBitmaps[index]
+        onItemClick = {
+            // Handle item click, 'it' is the index in your original 'bitmaps' list
+            Toast.makeText(context, "Clicked on image at index: $it", Toast.LENGTH_SHORT).show()
+            // You can use this index to, for example, open a full-screen view of imageBitmaps[it]
         },
         // Optional Styling:
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        ItemPadding = 6.dp, // Padding around each individual image
-        ItemShape = RoundedCornerShape(12.dp) // Shape for clipping each image
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp), // Padding around the content
+        itemPadding = 6.dp, // Padding around each individual image
+        itemShape = RoundedCornerShape(12.dp) // Shape for clipping each image
     )
 }
 ```
