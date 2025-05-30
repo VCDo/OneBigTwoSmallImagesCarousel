@@ -66,13 +66,14 @@ fun Content(modifier: Modifier = Modifier) {
         )
         OBTSICarousel(
             modifier = Modifier.height(300.dp),
-            bitmaps = List(9) {
+            images = List(9) {
                 BitmapHelpers.generateSampleBitmap(
                     width = 200,
                     height = 100,
                     index = it
                 )
             },
+            imageContentDescription = { index, _ -> "Image at index: $index" },
             contentPadding = PaddingValues(12.dp),
             itemShape = RoundedCornerShape(8.dp),
             itemPadding = 4.dp

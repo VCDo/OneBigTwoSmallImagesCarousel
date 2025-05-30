@@ -34,7 +34,8 @@ import androidx.compose.ui.unit.dp
  * An optional click listener provides the index of the clicked image from the original list.
 
  * @param modifier The [Modifier] to be applied to the entire carousel layout.
- * @param bitmaps The list of [Bitmap] objects to display in the carousel.
+ * @param images The list of [Bitmap] objects to display in the carousel.
+ * @param imageContentDescription A lambda that provides a content description for each image.
  * @param contentPadding [PaddingValues] to apply around the content of the underlying `LazyRow`.
  *            Defaults to `PaddingValues(all = 12.dp)`.
  * @param itemPadding Padding to apply around each individual image item. Defaults to `4.dp`.
@@ -47,23 +48,24 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OBTSICarousel(
     modifier: Modifier = Modifier,
-    bitmaps: List<Bitmap>,
+    images: List<Bitmap>,
+    imageContentDescription: (index: Int, bitmap: Bitmap) -> String?,
     contentPadding: PaddingValues = PaddingValues(all = 12.dp),
     itemPadding: Dp = 4.dp,
     itemShape: Shape = RoundedCornerShape(8.dp),
     onItemClick: (index: Int) -> Unit = {}
 ) {
-    if (bitmaps.isEmpty()) return
+    if (images.isEmpty()) return
 
-    val chunkedBitmaps = remember(bitmaps) {
+    val chunkedBitmaps = remember(images) {
         val chunkList = mutableListOf<List<Bitmap>>()
         var chunkSize = 1
         var index = 0
 
-        while (index < bitmaps.size) {
-            val row = bitmaps.subList(
+        while (index < images.size) {
+            val row = images.subList(
                 fromIndex = index,
-                toIndex = minOf(index + chunkSize, bitmaps.size)
+                toIndex = minOf(index + chunkSize, images.size)
             )
             chunkList.add(row)
             index += row.size
@@ -84,6 +86,7 @@ fun OBTSICarousel(
                     val originalIndex = currentBitmapIndex
                     CarouselItem(
                         bitmap = row[0],
+                        contentDescription = imageContentDescription(originalIndex, row[0]),
                         modifier = Modifier.fillMaxHeight(),
                         padding = itemPadding,
                         shape = itemShape
@@ -96,6 +99,7 @@ fun OBTSICarousel(
                         val originalIndex = currentBitmapIndex + itemInRowIndex
                         CarouselItem(
                             bitmap = bitmap,
+                            contentDescription = imageContentDescription(originalIndex, bitmap),
                             modifier = Modifier.weight(0.5f),
                             padding = itemPadding,
                             shape = itemShape
@@ -109,9 +113,10 @@ fun OBTSICarousel(
 }
 
 @Composable
-fun CarouselItem(
-    bitmap: Bitmap,
+internal fun CarouselItem(
     modifier: Modifier,
+    bitmap: Bitmap,
+    contentDescription: String?,
     padding: Dp,
     shape: Shape,
     onClick: (Bitmap) -> Unit
@@ -125,7 +130,7 @@ fun CarouselItem(
     ) {
         Image(
             bitmap = bitmap.asImageBitmap(),
-            contentDescription = null,
+            contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )

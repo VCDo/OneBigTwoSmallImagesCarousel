@@ -1,7 +1,9 @@
 package de.darkovukic.android.onebigtwosmallimagescarousel
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,12 +19,16 @@ import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 fun OBTSICarouselPreviewDefault() {
     OBTSICarousel(
         modifier = Modifier.height(300.dp),
-        bitmaps = List(4) {
+        images = List(4) {
             BitmapHelpers.generateSampleBitmap(
                 width = 200,
                 height = 100,
                 index = it
             )
-        }
+        },
+        imageContentDescription = { index, _ -> "Image at index: $index" },
+        contentPadding = PaddingValues(12.dp),
+        itemPadding = 4.dp,
+        itemShape = RoundedCornerShape(8.dp)
     )
 }
