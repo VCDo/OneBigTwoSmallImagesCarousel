@@ -36,3 +36,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - README files were updated.
+
+## [0.1.4] - 2025-05-30
+
+### Added
+- Added options for customizing outside layout padding and item shape & padding.
+
+### Changed
+- README files were updated.
