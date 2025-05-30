@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -72,6 +73,7 @@ fun Content(modifier: Modifier = Modifier) {
                     index = it
                 )
             },
+            contentPadding = PaddingValues(12.dp),
             itemShape = RoundedCornerShape(8.dp),
             itemPadding = 4.dp
         ) {
