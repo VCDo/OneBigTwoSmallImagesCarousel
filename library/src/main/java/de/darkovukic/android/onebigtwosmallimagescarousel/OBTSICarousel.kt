@@ -28,6 +28,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
+/**
+ * A Jetpack Compose Composable that displays a horizontally scrollable carousel of images
+ * in a "one big, two small" repeating pattern.
+ *
+ * The carousel arranges images by showing one large image, followed by a column of two smaller images,
+ * and repeats this pattern. It takes a list of [Bitmap] objects as input.
+ *
+ * Users can customize padding, item spacing, shape, and borders for the images.
+ * An optional click listener provides the index of the clicked image from the original list.
+
+ * @param modifier The [Modifier] to be applied to the entire carousel layout.
+ * @param bitmaps The list of [Bitmap] objects to display in the carousel.
+ * @param contentPadding [PaddingValues] to apply around the content of the underlying `LazyRow`.
+ *            Defaults to `PaddingValues(all = 12.dp)`.
+ * @param itemPadding Padding to apply around each individual image item. Defaults to `4.dp`.
+ * @param itemShape The [Shape] used to clip each individual image item.
+ *            Defaults to `RoundedCornerShape(8.dp)`.
+ * @param onItemClick A lambda that is invoked when an image in the carousel is clicked.
+ *            It receives the index of the clicked image from the original [bitmaps] list.
+ *            Defaults to an empty lambda.
+ */
 @Composable
 fun OBTSICarousel(
     modifier: Modifier = Modifier,
