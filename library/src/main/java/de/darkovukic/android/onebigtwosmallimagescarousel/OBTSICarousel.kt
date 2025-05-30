@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -75,28 +75,34 @@ fun OBTSICarousel(
         chunkList
     }
 
-    var currentBitmapIndex = 0
     LazyRow(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
-        items(chunkedBitmaps) { row ->
+        itemsIndexed(chunkedBitmaps) { chunkIndex, row ->
+            // Calculate the start index for this chunk
+            val startIndexForThisChunk = remember(chunkIndex, chunkedBitmaps) {
+                var calculatedStartIndex = 0
+                for (i in 0 until chunkIndex) {
+                    calculatedStartIndex += chunkedBitmaps[i].size
+                }
+                calculatedStartIndex
+            }
+
             if (row.size == 1) {
                 Box(modifier = Modifier.fillMaxHeight()) {
-                    val originalIndex = currentBitmapIndex
                     CarouselItem(
                         bitmap = row[0],
-                        contentDescription = imageContentDescription(originalIndex, row[0]),
+                        contentDescription = imageContentDescription(startIndexForThisChunk, row[0]),
                         modifier = Modifier.fillMaxHeight(),
                         padding = itemPadding,
                         shape = itemShape
-                    ) { onItemClick(originalIndex) }
+                    ) { onItemClick(startIndexForThisChunk) }
                 }
-                currentBitmapIndex += 1
             } else {
                 Column(modifier = Modifier.fillMaxHeight()) {
                     row.forEachIndexed { itemInRowIndex, bitmap ->
-                        val originalIndex = currentBitmapIndex + itemInRowIndex
+                        val originalIndex = startIndexForThisChunk + itemInRowIndex
                         CarouselItem(
                             bitmap = bitmap,
                             contentDescription = imageContentDescription(originalIndex, bitmap),
@@ -106,7 +112,6 @@ fun OBTSICarousel(
                         ) { onItemClick(originalIndex) }
                     }
                 }
-                currentBitmapIndex += 2
             }
         }
     }
