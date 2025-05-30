@@ -44,3 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - README files were updated.
+
+## [0.1.5] - 2025-05-30
+
+### Fixed
+- Wrong index returned when clicking on OBTSICarousel item after some scroll action for example.
+
+### Changed
+- README files were updated.
