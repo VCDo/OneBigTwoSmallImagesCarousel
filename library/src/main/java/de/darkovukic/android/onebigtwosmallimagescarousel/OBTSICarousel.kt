@@ -39,8 +39,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,6 +78,8 @@ import androidx.compose.ui.unit.dp
  *            Defaults to `Color.Gray`.
  * @param itemBorderStroke The [BorderStroke] to apply to the images.
  *            Defaults to `BorderStroke(0.dp, Color.Transparent)`.
+ * @param onScrollVisibilityChanged A lambda that is invoked when the visibility state of the
+ *            carousel changes.
  * @param onItemClick A lambda that is invoked when an image in the carousel is clicked.
  *            It receives the index of the clicked image from the original [images] list.
  *            Defaults to an empty lambda.
@@ -92,15 +96,22 @@ fun OBTSICarousel(
     itemContentScale: ContentScale = ContentScale.Crop,
     itemBackgroundColor: Color = Color.Gray,
     itemBorderStroke: BorderStroke = BorderStroke(0.dp, Color.Transparent),
+    onScrollVisibilityChanged: (CarouselVisibility) -> Unit = {},
     onItemClick: (index: Int) -> Unit = {}
 ) {
-    if (images.isEmpty()) return
+    if (images.isEmpty()) {
+        // When the list is empty, report ALL_VISIBLE and return.
+        // This ensures the callback is triggered even for an empty state.
+        LaunchedEffect(Unit) {
+            onScrollVisibilityChanged(CarouselVisibility.ALL_VISIBLE)
+        }
+        return
+    }
 
     val chunkedBitmaps = remember(images) {
         val chunkList = mutableListOf<List<Bitmap>>()
         var chunkSize = 1
         var index = 0
-
         while (index < images.size) {
             val row = images.subList(
                 fromIndex = index,
@@ -110,12 +121,21 @@ fun OBTSICarousel(
             index += row.size
             chunkSize = if (chunkSize == 1) 2 else 1
         }
-
         chunkList
     }
 
+    val lazyListState = rememberLazyListState()
+
+    // Use the observer to handle visibility logic
+    CarouselVisibilityObserver(
+        lazyListState = lazyListState,
+        totalItemCount = chunkedBitmaps.size,
+        onScrollVisibilityChanged = onScrollVisibilityChanged
+    )
+
     LazyRow(
         modifier = modifier,
+        state = lazyListState,
         contentPadding = contentPadding,
         horizontalArrangement = itemArrangement
     ) {

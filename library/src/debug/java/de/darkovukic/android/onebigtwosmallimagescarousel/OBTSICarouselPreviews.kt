@@ -70,7 +70,9 @@ fun OBTSICarouselPreviewAll() {
         itemShape = RoundedCornerShape(16.dp),
         itemContentScale = ContentScale.Inside,
         itemBackgroundColor = Color.DarkGray,
-        itemBorderStroke = BorderStroke(width = 1.dp, color = Color.Gray)
+        itemBorderStroke = BorderStroke(width = 1.dp, color = Color.Gray),
+        onScrollVisibilityChanged = {},
+        onItemClick = {}
     )
 }
 

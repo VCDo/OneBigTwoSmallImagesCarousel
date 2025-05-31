@@ -40,6 +40,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import de.darkovukic.android.onebigtwosmallimagescarousel.CarouselVisibility
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
 import de.darkovukic.android.onebigtwosmallimagescarousel.sample.ui.theme.OneBigTwoSmallImagesCarouselTheme
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
@@ -73,6 +78,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Content(modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    var currentVisibility by remember { mutableStateOf<CarouselVisibility?>(null) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -97,7 +104,10 @@ fun Content(modifier: Modifier = Modifier) {
             imageContentDescription = { index, _ -> "Image at index: $index" },
             contentPadding = PaddingValues(12.dp),
             itemShape = RoundedCornerShape(8.dp),
-            itemPadding = 4.dp
+            itemPadding = 4.dp,
+            onScrollVisibilityChanged = { visibility ->
+                currentVisibility = visibility
+            }
         ) {
             showClickedOnMessage(
                 context = context,
@@ -105,7 +115,14 @@ fun Content(modifier: Modifier = Modifier) {
             )
         }
         Text(
-            text = stringResource(R.string.swipe_left_to_see_more),
+            text = when (currentVisibility) {
+                CarouselVisibility.START_VISIBLE -> stringResource(R.string.swipe_left_to_see_more)
+                CarouselVisibility.MIDDLE_VISIBLE -> stringResource(R.string.swipe_left_or_right_to_see_more)
+                CarouselVisibility.END_VISIBLE -> stringResource(R.string.swipe_right_to_see_more)
+                CarouselVisibility.ALL_VISIBLE -> stringResource(R.string.complete_carousel_visible)
+                else -> ""
+            },
+            textAlign = TextAlign.Center,
             modifier = Modifier.padding(16.dp)
         )
     }
