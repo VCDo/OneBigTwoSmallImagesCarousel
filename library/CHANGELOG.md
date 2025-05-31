@@ -62,3 +62,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - README files were updated.
 - Screenshots of sample app were updated.
+
+## [0.3.0] - 2025-05-31
+
+### Added
+- Item modifier for OBTSICarousel which is super flexible to customize each item.
+
+### Changed
+- README files were updated.
+- Screenshots of OBTSICarouselPreviews were updated.
