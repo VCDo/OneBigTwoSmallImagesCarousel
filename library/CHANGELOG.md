@@ -52,3 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - README files were updated.
+
+## [0.2.0] - 2025-05-31
+
+### Added
+- Added option to listen for OBTSICarousel scroll changes.
+- Added more options for customizing OBTSICarousel items like content scale, background color and border.
+
+### Changed
+- README files were updated.
+- Screenshots of sample app were updated.
