@@ -25,8 +25,10 @@ Here some previews:
 - Built entirely with Jetpack Compose
 - Horizontally scrollable layout
 - Customizable base layout thru Modifier
-- Customizable image padding and shape
+- Customizable image spacing, shape, border and content scale
 - Designed for any number of images (automatically batches them in the pattern: 1 large + 2 small)
+- Supports click handling
+- Supports visibility state handling
 
 ## Installation
 
@@ -101,18 +103,25 @@ fun MyScreenWithCarousel() {
 
         // Set a height for the carousel
         modifier = Modifier.height(300.dp),
-        
+
         // The list of images to display
         images = imageBitmaps,
-        
+
         // Lambda for handling image content descriptions
         imageContentDescription = { index, _ -> "Image at index: $index" },
-        
+
+        // >>> Optional Callbacks:
+
         // Callback when an image is clicked
         onItemClick = {
             // Handle item click, 'it' is the index in your original 'bitmaps' list
         },
-        
+
+        // Callback when the visibility of the carousel changes
+        onScrollVisibilityChanged = {
+            // Handle visibility changes, 'it' is the current visibility state
+        }
+
         // >>> Optional Styling:
 
         // Padding around the content
@@ -151,6 +160,7 @@ fun MyScreenWithCarousel() {
 *   `itemContentScale`: (Optional) `ContentScale` applied to each image. Defaults to `ContentScale.Crop`.
 *   `itemBackgroundColor`: (Optional) `Color` used to paint the background of each image. Defaults to `Color.Gray`.
 *   `itemBorderStroke`: (Optional) `BorderStroke` applied to each image. Defaults to `BorderStroke(0.dp, Color.Transparent)`.
+*   `onScrollVisibilityChanged`: (Optional) Lambda `(visibility: CarouselVisibility) -> Unit` that is invoked when the visibility state of the carousel changes. Defaults to an empty lambda.
 *   `onItemClick`: (Optional) Lambda `(index: Int) -> Unit` that is invoked when an image in the carousel is clicked. The `index` corresponds to the position in the original `bitmaps` list. Defaults to an empty lambda.
 
 ## License
