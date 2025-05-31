@@ -7,28 +7,24 @@ production use or as a stable library. ⚠️**
 ## Overview
 
 **OneBigTwoSmallImagesCarousel** is an Android **Jetpack Compose** library that provides a
-customizable image carousel that displays one large image followed by two small images in a
-repeating pattern:
-- 1 large image
-- 2 small stacked images
-- 1 large image
-- 2 small stacked images
-- …
+customizable image carousel that displays a horizontally scrollable carousel of images in a
+"one big, two small" repeating pattern.
+
+## Features
+
+*   Displays images in an alternating "one large, two small" pattern.
+*   Horizontally scrollable using Jetpack Compose's `LazyRow`.
+*   Highly customizable item appearance via a flexible `Modifier`.
+*   Callback for item click events.
+*   Callback for changes in carousel scroll visibility (start, middle, end, all visible).
+*   Built with modern Android Jetpack Compose.
+
+## Preview
 
 Here some previews:
 <p align="center">
   <img src="screenshots/previews.png" alt="Screenshot 1 of OBTSICarousel's sample app">
 </p>
-
-## Features
-
-- Built entirely with Jetpack Compose
-- Horizontally scrollable layout
-- Customizable base layout thru Modifier
-- Customizable image spacing, shape, border and content scale
-- Designed for any number of images (automatically batches them in the pattern: 1 large + 2 small)
-- Supports click handling
-- Supports visibility state handling
 
 ## Installation
 
@@ -148,20 +144,41 @@ fun MyScreenWithCarousel() {
 }
 ```
 
-### Parameters
+## Customization
 
-*   `modifier`: (Optional) Standard Jetpack Compose `Modifier` to be applied to the root of the `OBTSICarousel`. Defaults to `Modifier`.
-*   `images`: A `List<Bitmap>` of images to display in the carousel. This is a required parameter.
-*   `imageContentDescription`: A lambda that provides a content description for each image.
-*   `contentPadding`: (Optional) `PaddingValues` for the internal `LazyRow` that holds the carousel items. Defaults to `PaddingValues(all = 12.dp)`.
-*   `itemPadding`: (Optional) `Dp` value for padding applied around each individual image within its designated space. Defaults to `4.dp`.
-*   `itemAttangement`: (Optional) `Arrangement` for the internal `LazyRow` that holds the carousel items. Defaults to `Arrangement.spacedBy(0.dp)`.
-*   `itemShape`: (Optional) `Shape` used to clip each individual image. Defaults to `RoundedCornerShape(8.dp)`.
-*   `itemContentScale`: (Optional) `ContentScale` applied to each image. Defaults to `ContentScale.Crop`.
-*   `itemBackgroundColor`: (Optional) `Color` used to paint the background of each image. Defaults to `Color.Gray`.
-*   `itemBorderStroke`: (Optional) `BorderStroke` applied to each image. Defaults to `BorderStroke(0.dp, Color.Transparent)`.
-*   `onScrollVisibilityChanged`: (Optional) Lambda `(visibility: CarouselVisibility) -> Unit` that is invoked when the visibility state of the carousel changes. Defaults to an empty lambda.
-*   `onItemClick`: (Optional) Lambda `(index: Int) -> Unit` that is invoked when an image in the carousel is clicked. The `index` corresponds to the position in the original `bitmaps` list. Defaults to an empty lambda.
+The `OBTSICarousel` offers several parameters for customization:
+
+### Core Parameters
+
+*   `modifier`: `Modifier` - Applied to the main `LazyRow` container of the carousel.
+*   `images`: `List<Bitmap>` - The list of bitmaps to display.
+*   `imageContentDescription`: `(index: Int, bitmap: Bitmap) -> String?` - Provides content descriptions for accessibility.
+*   `onItemClick`: `(index: Int) -> Unit` - Lambda invoked when an item is clicked.
+*   `onScrollVisibilityChanged`: `(CarouselVisibility) -> Unit` - Lambda invoked when the scroll visibility state changes.
+
+### Layout and Spacing
+
+*   `contentPadding`: `PaddingValues` - Padding around the content of the `LazyRow`. Defaults to `PaddingValues(all = 12.dp)`.
+*   `itemArrangement`: `Arrangement.Horizontal` - Horizontal arrangement of items within the `LazyRow` (e.g., spacing between chunks). Defaults to `Arrangement.spacedBy(0.dp)`.
+
+### Item Appearance (Highly Flexible)
+
+The appearance of each individual item (the big one or the two small ones) can be fully customized using the `itemModifier` parameter. This modifier is applied to the container of each image.
+
+*   `itemContentScale`: `ContentScale` - Defines how the bitmap should be scaled within its bounds (e.g., `ContentScale.Crop`, `ContentScale.Fit`). Defaults to `ContentScale.Crop`.
+*   `itemModifier`: `Modifier` - Allows you to apply any combination of modifiers to style each item. This is where you set padding, shape, background, borders, etc. for the items.
+    *   **Note:** Essential layout modifiers (like `aspectRatio`, `fillMaxHeight`/`weight`, and `clickable`) are applied by the `OBTSICarousel` internally before your `itemModifier`. Your modifier is then applied via `.then()`, allowing you to further customize or even override certain aspects if needed.
+
+### Scroll Visibility States
+
+The `onScrollVisibilityChanged` callback provides a `CarouselVisibility` enum with the following states:
+
+*   `START_VISIBLE`: The start of the carousel is fully visible, but the end is not.
+*   `MIDDLE_VISIBLE`: Neither the start nor the end is fully visible (scrolling through the middle).
+*   `END_VISIBLE`: The end of the carousel is fully visible, but the start is not.
+*   `ALL_VISIBLE`: The entire carousel is fully visible, or the carousel is empty.
+
+You can use these states to provide visual cues to the user (e.g., "swipe left to see more").
 
 ## License
 

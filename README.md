@@ -7,15 +7,21 @@ production use or as a stable library. ⚠️**
 ## Overview
 
 **OneBigTwoSmallImagesCarousel** is an Android **Jetpack Compose** library that provides a
-customizable image carousel that displays one large image followed by two small images in a
-repeating pattern:
-- 1 large image
-- 2 small stacked images
-- 1 large image
-- 2 small stacked images
-- …
+customizable image carousel that displays a horizontally scrollable carousel of images in a
+"one big, two small" repeating pattern.
 
 Ideal for photo galleries, product showcases, or any content with visual hierarchy.
+
+## Features
+
+*   Built with modern Android Jetpack Compose.
+*   Displays images in an alternating "one large, two small" pattern.
+*   Horizontally scrollable using Jetpack Compose's `LazyRow`.
+*   Highly customizable item appearance via a flexible `Modifier`.
+*   Callback for item click events.
+*   Callback for changes in carousel scroll visibility (start, middle, end, all visible).
+
+## Preview
 
 Here some screenshots of the sample app:
 <p align="center">
