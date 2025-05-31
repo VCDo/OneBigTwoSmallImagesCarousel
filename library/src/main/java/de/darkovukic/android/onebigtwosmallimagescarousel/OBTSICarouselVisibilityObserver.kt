@@ -107,15 +107,15 @@ internal fun CarouselVisibilityObserver(
                 } else {
                     // visibleItemsInfo is NOT empty, and totalItemCount > 0
                     val firstVisibleItem =
-                        visibleItemsInfo.first() // No need for firstOrNull, as it's not empty
-                    val lastVisibleItem = visibleItemsInfo.last()  // No need for lastOrNull
+                        visibleItemsInfo.first()
+                    val lastVisibleItem = visibleItemsInfo.last()
 
                     val firstItemFullyVisible =
                         firstVisibleItem.index == 0 && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
                     val lastItemFullyVisible =
                         lastVisibleItem.index == totalItemCount - 1 && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
                     val allItemsVisibleInLayout =
-                        visibleItemsInfo.size == totalItemCount // No need to check first/last index here, size is enough if they are contiguous
+                        visibleItemsInfo.size == totalItemCount
 
                     if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
                         CarouselVisibility.ALL_VISIBLE
@@ -163,8 +163,8 @@ internal fun CarouselVisibilityObserver(
             } else {
                 // visibleItemsInfo is NOT empty, and totalItemCount > 0.
                 // Re-evaluate the core visibility logic for the initial state.
-                val firstVisibleItem = visibleItemsInfo.first() // No need for firstOrNull
-                val lastVisibleItem = visibleItemsInfo.last()  // No need for firstOrNull
+                val firstVisibleItem = visibleItemsInfo.first()
+                val lastVisibleItem = visibleItemsInfo.last()
 
                 val firstItemFullyVisible =
                     firstVisibleItem.index == 0 && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
