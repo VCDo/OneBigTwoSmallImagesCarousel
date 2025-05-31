@@ -47,10 +47,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -68,16 +66,13 @@ import androidx.compose.ui.unit.dp
  * @param imageContentDescription A lambda that provides a content description for each image.
  * @param contentPadding [PaddingValues] to apply around the content of the underlying `LazyRow`.
  *            Defaults to `PaddingValues(all = 12.dp)`.
- * @param itemPadding Padding to apply around each individual image item. Defaults to `4.dp`.
+ * @param itemModifier The [Modifier] to be applied to each individual carousel item's container (`Box`).
+ *            This allows for full customization of padding, shape, background, border, etc., for each item.
+ *            Essential layout modifiers like `aspectRatio` and `clickable` are applied by the component itself
+ *            before this user-provided modifier. Defaults to `Modifier`.
  * @param itemArrangement Arrangement of the individual image items. Defaults to `spacedBy(0.dp)`.
- * @param itemShape The [Shape] used to clip each individual image item.
- *            Defaults to `RoundedCornerShape(8.dp)`.
  * @param itemContentScale The [ContentScale] to apply to the images.
  *            Defaults to `ContentScale.Crop`.
- * @param itemBackgroundColor The background color to apply to the images.
- *            Defaults to `Color.Gray`.
- * @param itemBorderStroke The [BorderStroke] to apply to the images.
- *            Defaults to `BorderStroke(0.dp, Color.Transparent)`.
  * @param onScrollVisibilityChanged A lambda that is invoked when the visibility state of the
  *            carousel changes.
  * @param onItemClick A lambda that is invoked when an image in the carousel is clicked.
@@ -90,12 +85,13 @@ fun OBTSICarousel(
     images: List<Bitmap>,
     imageContentDescription: (index: Int, bitmap: Bitmap) -> String?,
     contentPadding: PaddingValues = PaddingValues(all = 12.dp),
-    itemPadding: Dp = 4.dp,
+    itemModifier: Modifier = Modifier
+        .padding(4.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(Color.Gray)
+        .border(BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(8.dp)),
     itemArrangement: Arrangement.Horizontal = Arrangement.spacedBy(0.dp),
-    itemShape: Shape = RoundedCornerShape(8.dp),
     itemContentScale: ContentScale = ContentScale.Crop,
-    itemBackgroundColor: Color = Color.Gray,
-    itemBorderStroke: BorderStroke = BorderStroke(0.dp, Color.Transparent),
     onScrollVisibilityChanged: (CarouselVisibility) -> Unit = {},
     onItemClick: (index: Int) -> Unit = {}
 ) {
@@ -150,21 +146,22 @@ fun OBTSICarousel(
             }
 
             if (row.size == 1) {
-                Box(modifier = Modifier.fillMaxHeight()) {
-                    CarouselItem(
-                        bitmap = row[0],
-                        contentDescription = imageContentDescription(
-                            startIndexForThisChunk,
-                            row[0]
-                        ),
-                        modifier = Modifier.fillMaxHeight(),
-                        padding = itemPadding,
-                        shape = itemShape,
-                        contentScale = itemContentScale,
-                        backgroundColor = itemBackgroundColor,
-                        borderStroke = itemBorderStroke
-                    ) { onItemClick(startIndexForThisChunk) }
-                }
+                // Base modifiers essential for the big item's layout and functionality
+                val baseModifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(1f)
+                    .clickable { onItemClick(startIndexForThisChunk) }
+
+                CarouselItem(
+                    // Apply base modifiers first, then the user-provided modifier
+                    modifier = baseModifier.then(itemModifier),
+                    bitmap = row[0],
+                    contentDescription = imageContentDescription(
+                        startIndexForThisChunk,
+                        row[0]
+                    ),
+                    contentScale = itemContentScale
+                )
             } else {
                 Column(
                     modifier = Modifier
@@ -173,16 +170,19 @@ fun OBTSICarousel(
                 ) {
                     row.forEachIndexed { itemInRowIndex, bitmap ->
                         val originalIndex = startIndexForThisChunk + itemInRowIndex
+                        // Base modifiers essential for the small item's layout and functionality
+                        val baseModifier = Modifier
+                            .weight(1f)
+                            .aspectRatio(1f)
+                            .clickable { onItemClick(originalIndex) }
+
                         CarouselItem(
+                            // Apply base modifiers first, then the user-provided modifier
+                            modifier = baseModifier.then(itemModifier),
                             bitmap = bitmap,
                             contentDescription = imageContentDescription(originalIndex, bitmap),
-                            modifier = Modifier.weight(1f),
-                            padding = itemPadding,
-                            shape = itemShape,
-                            contentScale = itemContentScale,
-                            backgroundColor = itemBackgroundColor,
-                            borderStroke = itemBorderStroke
-                        ) { onItemClick(originalIndex) }
+                            contentScale = itemContentScale
+                        )
                     }
                 }
             }
@@ -190,26 +190,26 @@ fun OBTSICarousel(
     }
 }
 
+/**
+ * Internal composable representing a single item in the carousel.
+ * It displays an image within a Box that is styled by the provided modifier.
+ *
+ * @param modifier The [Modifier] to be applied to the item's container (`Box`).
+ *                 This modifier is constructed in [OBTSICarousel] and includes
+ *                 base layout modifiers, click handling, and user-customizations.
+ * @param bitmap The [Bitmap] to display.
+ * @param contentDescription The content description for the image.
+ * @param contentScale The [ContentScale] for the image.
+ */
 @Composable
 internal fun CarouselItem(
     modifier: Modifier,
     bitmap: Bitmap,
     contentDescription: String?,
-    padding: Dp,
-    shape: Shape,
-    contentScale: ContentScale,
-    backgroundColor: Color,
-    borderStroke: BorderStroke,
-    onClick: () -> Unit
+    contentScale: ContentScale
 ) {
     Box(
         modifier = modifier
-            .aspectRatio(1f)
-            .padding(padding)
-            .clip(shape)
-            .background(backgroundColor)
-            .border(border = borderStroke, shape = shape)
-            .clickable { onClick() }
     ) {
         Image(
             bitmap = bitmap.asImageBitmap(),

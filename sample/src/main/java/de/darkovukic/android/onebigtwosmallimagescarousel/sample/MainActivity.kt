@@ -28,7 +28,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,6 +48,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -92,6 +96,7 @@ fun Content(modifier: Modifier = Modifier) {
             text = stringResource(R.string.this_project_demonstrates),
             textAlign = TextAlign.Center
         )
+        val shape = RoundedCornerShape(8.dp)
         OBTSICarousel(
             modifier = Modifier.height(300.dp),
             images = List(9) {
@@ -103,8 +108,11 @@ fun Content(modifier: Modifier = Modifier) {
             },
             imageContentDescription = { index, _ -> "Image at index: $index" },
             contentPadding = PaddingValues(12.dp),
-            itemShape = RoundedCornerShape(8.dp),
-            itemPadding = 4.dp,
+            itemModifier = Modifier
+                .padding(4.dp)
+                .clip(shape)
+                .background(Color.LightGray)
+                .border(BorderStroke(1.dp, Color.White), shape),
             onScrollVisibilityChanged = { visibility ->
                 currentVisibility = visibility
             }

@@ -22,13 +22,17 @@
 package de.darkovukic.android.onebigtwosmallimagescarousel
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,6 +58,7 @@ fun OBTSICarouselPreviewDefault() {
 @Preview(name = "All parameter specified")
 @Composable
 fun OBTSICarouselPreviewAll() {
+    val shape = RoundedCornerShape(16.dp)
     OBTSICarousel(
         modifier = Modifier.height(150.dp),
         images = List(6) {
@@ -65,12 +70,13 @@ fun OBTSICarouselPreviewAll() {
         },
         imageContentDescription = { index, _ -> "Image at index: $index" },
         contentPadding = PaddingValues(6.dp),
-        itemPadding = 8.dp,
+        itemModifier = Modifier
+            .padding(8.dp)
+            .clip(shape)
+            .background(Color.DarkGray)
+            .border(BorderStroke(1.dp, Color.Gray), shape),
         itemArrangement = Arrangement.spacedBy(8.dp),
-        itemShape = RoundedCornerShape(16.dp),
         itemContentScale = ContentScale.Inside,
-        itemBackgroundColor = Color.DarkGray,
-        itemBorderStroke = BorderStroke(width = 1.dp, color = Color.Gray),
         onScrollVisibilityChanged = {},
         onItemClick = {}
     )
@@ -79,6 +85,7 @@ fun OBTSICarouselPreviewAll() {
 @Preview(name = "No padding")
 @Composable
 fun OBTSICarouselPreviewNoPadding() {
+    val shape = CutCornerShape(0.dp)
     OBTSICarousel(
         modifier = Modifier.height(150.dp),
         images = List(6) {
@@ -90,8 +97,10 @@ fun OBTSICarouselPreviewNoPadding() {
         },
         imageContentDescription = { index, _ -> "Image at index: $index" },
         contentPadding = PaddingValues(0.dp),
-        itemPadding = 0.dp,
-        itemShape = CutCornerShape(0.dp),
-        itemBorderStroke = BorderStroke(width = 1.dp, color = Color.DarkGray)
+        itemModifier = Modifier
+            .padding(0.dp)
+            .clip(shape)
+            .background(Color.DarkGray)
+            .border(BorderStroke(1.dp, Color.DarkGray), shape)
     )
 }
