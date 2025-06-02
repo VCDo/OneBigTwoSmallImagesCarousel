@@ -105,7 +105,6 @@ fun OBTSICarousel(
     }
 
     val chunkedBitmaps = getChunkedBitmaps(images)
-
     val lazyListState = rememberLazyListState()
 
     // Use the observer to handle visibility logic
@@ -132,15 +131,23 @@ fun OBTSICarousel(
             }
 
             if (row.size == 1) {
-                // Base modifiers essential for the big item's layout and functionality
-                val baseModifier = Modifier
+                // Define the core layout for the big item
+                val layoutModifier = Modifier
                     .fillMaxHeight()
                     .aspectRatio(1f)
+
+                // Construct the final modifier for the CarouselItem:
+                // 1. Apply user's itemModifier (e.g., for padding, clip, background).
+                // 2. Then apply our core layout modifiers.
+                // 3. Finally, make it clickable. The ripple will be bounded by any .clip in itemModifier.
+                val finalItemModifier = itemModifier
+                    .then(layoutModifier)
                     .clickable { onItemClick(startIndexForThisChunk) }
+
 
                 CarouselItem(
                     // Apply base modifiers first, then the user-provided modifier
-                    modifier = baseModifier.then(itemModifier),
+                    modifier = finalItemModifier,
                     bitmap = row[0],
                     contentDescription = imageContentDescription(
                         startIndexForThisChunk,
@@ -156,15 +163,23 @@ fun OBTSICarousel(
                 ) {
                     row.forEachIndexed { itemInRowIndex, bitmap ->
                         val originalIndex = startIndexForThisChunk + itemInRowIndex
-                        // Base modifiers essential for the small item's layout and functionality
-                        val baseModifier = Modifier
+
+                        // Define the core layout for a small item
+                        val layoutModifier = Modifier
                             .weight(1f)
                             .aspectRatio(1f)
+
+                        // Construct the final modifier for this small CarouselItem:
+                        // 1. Apply user's itemModifier.
+                        // 2. Then apply our core layout modifiers.
+                        // 3. Finally, make it clickable.
+                        val finalItemModifier = itemModifier
+                            .then(layoutModifier)
                             .clickable { onItemClick(originalIndex) }
 
                         CarouselItem(
                             // Apply base modifiers first, then the user-provided modifier
-                            modifier = baseModifier.then(itemModifier),
+                            modifier = finalItemModifier,
                             bitmap = bitmap,
                             contentDescription = imageContentDescription(originalIndex, bitmap),
                             contentScale = itemContentScale
