@@ -104,21 +104,7 @@ fun OBTSICarousel(
         return
     }
 
-    val chunkedBitmaps = remember(images) {
-        val chunkList = mutableListOf<List<Bitmap>>()
-        var chunkSize = 1
-        var index = 0
-        while (index < images.size) {
-            val row = images.subList(
-                fromIndex = index,
-                toIndex = minOf(index + chunkSize, images.size)
-            )
-            chunkList.add(row)
-            index += row.size
-            chunkSize = if (chunkSize == 1) 2 else 1
-        }
-        chunkList
-    }
+    val chunkedBitmaps = getChunkedBitmaps(images)
 
     val lazyListState = rememberLazyListState()
 
@@ -218,4 +204,37 @@ internal fun CarouselItem(
             modifier = Modifier.fillMaxSize()
         )
     }
+}
+
+/**
+ * Internal composable function that chunks a list of [Bitmap]s into a list of lists.
+ * The chunking pattern alternates between chunks of size 1 and chunks of size 2.
+ * This is used to create the "one big, two small" layout for the carousel.
+ * The result is remembered based on the input `images` list.
+ *
+ * For example, if `images` is `[b1, b2, b3, b4, b5, b6]`:
+ * The output will be `[[b1], [b2, b3], [b4], [b5, b6]]`.
+ *
+ * If `images` is `[b1, b2, b3, b4, b5]`:
+ * The output will be `[[b1], [b2, b3], [b4], [b5]]`.
+ *
+ * @param images The list of [Bitmap] objects to be chunked.
+ * @return A [MutableList] of [List] of [Bitmap], where each inner list represents a chunk
+ *         following the 1-2-1-2... pattern.
+ */
+@Composable
+internal fun getChunkedBitmaps(images: List<Bitmap>): MutableList<List<Bitmap>> = remember(images) {
+    val chunkList = mutableListOf<List<Bitmap>>()
+    var chunkSize = 1
+    var index = 0
+    while (index < images.size) {
+        val row = images.subList(
+            fromIndex = index,
+            toIndex = minOf(index + chunkSize, images.size)
+        )
+        chunkList.add(row)
+        index += row.size
+        chunkSize = if (chunkSize == 1) 2 else 1
+    }
+    chunkList
 }
