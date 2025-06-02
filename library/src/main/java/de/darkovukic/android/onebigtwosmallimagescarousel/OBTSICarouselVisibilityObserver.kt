@@ -106,16 +106,14 @@ internal fun CarouselVisibilityObserver(
                     currentVisibilityState // Or perhaps calculate based on logic below if we assume layout is stable enough
                 } else {
                     // visibleItemsInfo is NOT empty, and totalItemCount > 0
-                    val firstVisibleItem =
-                        visibleItemsInfo.first()
+                    val firstVisibleItem = visibleItemsInfo.first()
                     val lastVisibleItem = visibleItemsInfo.last()
 
-                    val firstItemFullyVisible =
-                        firstVisibleItem.index == 0 && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
-                    val lastItemFullyVisible =
-                        lastVisibleItem.index == totalItemCount - 1 && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
-                    val allItemsVisibleInLayout =
-                        visibleItemsInfo.size == totalItemCount
+                    val firstItemFullyVisible = firstVisibleItem.index == 0
+                            && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
+                    val lastItemFullyVisible = lastVisibleItem.index == totalItemCount - 1
+                            && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
+                    val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
 
                     if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
                         OBTSICarouselVisibility.ALL_VISIBLE
@@ -166,10 +164,10 @@ internal fun CarouselVisibilityObserver(
                 val firstVisibleItem = visibleItemsInfo.first()
                 val lastVisibleItem = visibleItemsInfo.last()
 
-                val firstItemFullyVisible =
-                    firstVisibleItem.index == 0 && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
-                val lastItemFullyVisible =
-                    lastVisibleItem.index == totalItemCount - 1 && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
+                val firstItemFullyVisible = firstVisibleItem.index == 0
+                        && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
+                val lastItemFullyVisible = lastVisibleItem.index == totalItemCount - 1
+                        && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
                 val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
 
                 if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {

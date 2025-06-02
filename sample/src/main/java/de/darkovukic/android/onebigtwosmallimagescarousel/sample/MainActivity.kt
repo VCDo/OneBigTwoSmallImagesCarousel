@@ -61,8 +61,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarouselVisibility
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
+import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarouselVisibility
 import de.darkovukic.android.onebigtwosmallimagescarousel.sample.ui.theme.OneBigTwoSmallImagesCarouselTheme
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
