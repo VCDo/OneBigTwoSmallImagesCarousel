@@ -25,9 +25,7 @@ Ideal for photo galleries, product showcases, or any content with visual hierarc
 
 Here some screenshots of the sample app:
 <p align="center">
-  <img src="sample/screenshots/start.png" width="236" alt="Screenshot 1 of OBTSICarousel's sample app">
-  <img src="sample/screenshots/middle.png" width="236" alt="Screenshot 2 of OBTSICarousel's sample app">
-  <img src="sample/screenshots/end.png" width="236" alt="Screenshot 3 of OBTSICarousel's sample app">
+  <img src="sample/screenshots/sample_app.png" width="307" alt="Screenshot of OBTSICarousel's sample app">
 </p>
 
 ## Project Structure
