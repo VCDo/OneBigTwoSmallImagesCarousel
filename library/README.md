@@ -174,7 +174,7 @@ The `OBTSICarousel` offers several parameters for customization:
 *   `modifier`: `Modifier` - Applied to the main `LazyRow` container of the carousel.
 *   `images`: `List<Bitmap>` - The list of bitmaps to display.
 *   `imageContentDescription`: `(index: Int, bitmap: Bitmap) -> String?` - Provides content descriptions for accessibility.
-*   `onItemClick`: `(index: Int) -> Unit` - Lambda invoked when an item is clicked.
+*   `onItemClick`: `((index: Int) -> Unit)?` - Lambda invoked when an item is clicked.
 *   `onScrollVisibilityChanged`: `(OBTSICarouselVisibility) -> Unit` - Lambda invoked when the scroll visibility state changes.
 
 ### Layout and Spacing

@@ -77,7 +77,7 @@ import androidx.compose.ui.unit.dp
  *            carousel changes.
  * @param onItemClick A lambda that is invoked when an image in the carousel is clicked.
  *            It receives the index of the clicked image from the original [images] list.
- *            Defaults to an empty lambda.
+ *            Defaults to null.
  */
 @Composable
 fun OBTSICarousel(
