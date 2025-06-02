@@ -97,49 +97,60 @@ fun MyScreenWithCarousel() {
     OBTSICarousel(
         // >>> Required:
 
-        // Set a height for the carousel
-        modifier = Modifier.height(300.dp),
+        // Set the height, width and background of the carousel
+        modifier = Modifier
+            .height(height = 300.dp)
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)),
 
         // The list of images to display
-        images = imageBitmaps,
+        images = bitmaps,
 
         // Lambda for handling image content descriptions
-        imageContentDescription = { index, _ -> "Image at index: $index" },
-
-        // >>> Optional Callbacks:
-
-        // Callback when an image is clicked
-        onItemClick = {
-            // Handle item click, 'it' is the index in your original 'bitmaps' list
-        },
-
-        // Callback when the visibility of the carousel changes
-        onScrollVisibilityChanged = {
-            // Handle visibility changes, 'it' is the current visibility state
-        }
+        imageContentDescription = { index, image -> "Image $index" },
 
         // >>> Optional Styling:
 
         // Padding around the content
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 32.dp, vertical = 8.dp),
 
-        // Padding around each item
-        itemPadding = 6.dp,
+        // Padding, clip, border and background of each item
+        itemModifier = Modifier
+            .padding(
+                vertical = 4.dp,
+                horizontal = 8.dp
+            )
+            .clip(
+                shape = RoundedCornerShape(topStartPercent = 50, bottomEndPercent = 50)
+            )
+            .border(
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                shape = RoundedCornerShape(topStartPercent = 50, bottomEndPercent = 50)
+            )
+            .background(
+                color = Color.Blue.copy(alpha = 0.2f)
+            ),
 
-        // Spacing between items
-        itemArrangement = Arrangement.spacedBy(8.dp),
+        // The arrangement of the items in the carousel
+        itemArrangement = Arrangement.Start,
 
-        // Shape for clipping each item
-        itemShape = RoundedCornerShape(12.dp),
+        // Content scale of item images
+        itemContentScale = ContentScale.Crop,
 
-        // Content scale for each image
-        itemContentScale = ContentScale.Fit,
+        // >>> Optional Callbacks:
 
-        // Background color for each item
-        itemBackgroundColor = Color.White,
+        // Callback when the visibility of the carousel changes
+        onScrollVisibilityChanged = { state ->
+            when (state) {
+                CarouselVisibility.START_VISIBLE -> { /* Carousel start visible */ }
+                CarouselVisibility.MIDDLE_VISIBLE -> { /* Carousel middle visible */ }
+                CarouselVisibility.END_VISIBLE -> { /* Carousel end visible */ }
+                CarouselVisibility.ALL_VISIBLE -> { /* Carousel completely visible/invisible */ }
+            }
+        },
 
-        // Border stroke for each item
-        itemBorderStroke = BorderStroke(1.dp, Color.LightGray)
+        // Callback when an image is clicked
+        onItemClick = {/* Handle item click */ },
     )
 }
 ```
