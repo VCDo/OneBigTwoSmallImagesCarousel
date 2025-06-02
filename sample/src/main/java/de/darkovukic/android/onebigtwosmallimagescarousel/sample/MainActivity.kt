@@ -56,7 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import de.darkovukic.android.onebigtwosmallimagescarousel.CarouselVisibility
+import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarouselVisibility
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
 import de.darkovukic.android.onebigtwosmallimagescarousel.sample.ui.theme.OneBigTwoSmallImagesCarouselTheme
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Content(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var currentVisibility by remember { mutableStateOf<CarouselVisibility?>(null) }
+    var currentVisibility by remember { mutableStateOf<OBTSICarouselVisibility?>(null) }
 
     Column(
         modifier = modifier
@@ -124,10 +124,10 @@ fun Content(modifier: Modifier = Modifier) {
         }
         Text(
             text = when (currentVisibility) {
-                CarouselVisibility.START_VISIBLE -> stringResource(R.string.swipe_left_to_see_more)
-                CarouselVisibility.MIDDLE_VISIBLE -> stringResource(R.string.swipe_left_or_right_to_see_more)
-                CarouselVisibility.END_VISIBLE -> stringResource(R.string.swipe_right_to_see_more)
-                CarouselVisibility.ALL_VISIBLE -> stringResource(R.string.complete_carousel_visible)
+                OBTSICarouselVisibility.START_VISIBLE -> stringResource(R.string.swipe_left_to_see_more)
+                OBTSICarouselVisibility.MIDDLE_VISIBLE -> stringResource(R.string.swipe_left_or_right_to_see_more)
+                OBTSICarouselVisibility.END_VISIBLE -> stringResource(R.string.swipe_right_to_see_more)
+                OBTSICarouselVisibility.ALL_VISIBLE -> stringResource(R.string.complete_carousel_visible)
                 else -> ""
             },
             textAlign = TextAlign.Center,

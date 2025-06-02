@@ -92,14 +92,14 @@ fun OBTSICarousel(
         .border(BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(8.dp)),
     itemArrangement: Arrangement.Horizontal = Arrangement.spacedBy(0.dp),
     itemContentScale: ContentScale = ContentScale.Crop,
-    onScrollVisibilityChanged: (CarouselVisibility) -> Unit = {},
+    onScrollVisibilityChanged: (OBTSICarouselVisibility) -> Unit = {},
     onItemClick: (index: Int) -> Unit = {}
 ) {
     if (images.isEmpty()) {
         // When the list is empty, report ALL_VISIBLE and return.
         // This ensures the callback is triggered even for an empty state.
         LaunchedEffect(Unit) {
-            onScrollVisibilityChanged(CarouselVisibility.ALL_VISIBLE)
+            onScrollVisibilityChanged(OBTSICarouselVisibility.ALL_VISIBLE)
         }
         return
     }

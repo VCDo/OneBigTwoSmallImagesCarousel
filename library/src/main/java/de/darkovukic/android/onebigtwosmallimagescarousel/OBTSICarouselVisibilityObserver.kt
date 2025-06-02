@@ -35,7 +35,7 @@ import androidx.compose.runtime.setValue
  * Defines the different visibility states of the carousel as it's scrolled.
  * This is reported by [CarouselVisibilityObserver].
  */
-enum class CarouselVisibility {
+enum class OBTSICarouselVisibility {
     /**
      * Indicates that the start of the carousel (the first item) is fully visible,
      * but the end of the carousel is not.
@@ -76,14 +76,14 @@ enum class CarouselVisibility {
 internal fun CarouselVisibilityObserver(
     lazyListState: LazyListState,
     totalItemCount: Int,
-    onScrollVisibilityChanged: (CarouselVisibility) -> Unit
+    onScrollVisibilityChanged: (OBTSICarouselVisibility) -> Unit
 ) {
-    var currentVisibilityState by remember { mutableStateOf(CarouselVisibility.ALL_VISIBLE) }
+    var currentVisibilityState by remember { mutableStateOf(OBTSICarouselVisibility.ALL_VISIBLE) }
 
     val visibility by remember(totalItemCount) { // Depends on the number of items
         derivedStateOf {
             if (totalItemCount == 0) {
-                CarouselVisibility.ALL_VISIBLE
+                OBTSICarouselVisibility.ALL_VISIBLE
             } else {
                 val layoutInfo = lazyListState.layoutInfo
                 val visibleItemsInfo = layoutInfo.visibleItemsInfo
@@ -118,15 +118,15 @@ internal fun CarouselVisibilityObserver(
                         visibleItemsInfo.size == totalItemCount
 
                     if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
-                        CarouselVisibility.ALL_VISIBLE
+                        OBTSICarouselVisibility.ALL_VISIBLE
                     } else if (firstItemFullyVisible && !lastItemFullyVisible) {
-                        CarouselVisibility.START_VISIBLE
+                        OBTSICarouselVisibility.START_VISIBLE
                     } else if (lastItemFullyVisible && !firstItemFullyVisible) {
-                        CarouselVisibility.END_VISIBLE
+                        OBTSICarouselVisibility.END_VISIBLE
                     } else if (allItemsVisibleInLayout) { // All items fit, but might be slightly scrolled (e.g., during snap)
-                        CarouselVisibility.ALL_VISIBLE
+                        OBTSICarouselVisibility.ALL_VISIBLE
                     } else {
-                        CarouselVisibility.MIDDLE_VISIBLE
+                        OBTSICarouselVisibility.MIDDLE_VISIBLE
                     }
                 }
             }
@@ -147,7 +147,7 @@ internal fun CarouselVisibilityObserver(
         lazyListState
     ) { // Add lazyListState to re-evaluate if it changes externally
         val newVisibility = if (totalItemCount == 0) {
-            CarouselVisibility.ALL_VISIBLE
+            OBTSICarouselVisibility.ALL_VISIBLE
         } else {
             // At this point, totalItemCount > 0 is guaranteed.
             val layoutInfo = lazyListState.layoutInfo
@@ -173,15 +173,15 @@ internal fun CarouselVisibilityObserver(
                 val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
 
                 if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
-                    CarouselVisibility.ALL_VISIBLE
+                    OBTSICarouselVisibility.ALL_VISIBLE
                 } else if (firstItemFullyVisible && !lastItemFullyVisible) {
-                    CarouselVisibility.START_VISIBLE
+                    OBTSICarouselVisibility.START_VISIBLE
                 } else if (lastItemFullyVisible && !firstItemFullyVisible) {
-                    CarouselVisibility.END_VISIBLE
+                    OBTSICarouselVisibility.END_VISIBLE
                 } else if (allItemsVisibleInLayout) { // All items fit, but might be slightly scrolled (e.g., during snap)
-                    CarouselVisibility.ALL_VISIBLE
+                    OBTSICarouselVisibility.ALL_VISIBLE
                 } else {
-                    CarouselVisibility.MIDDLE_VISIBLE
+                    OBTSICarouselVisibility.MIDDLE_VISIBLE
                 }
             }
         }

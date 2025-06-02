@@ -81,7 +81,7 @@ import androidx.compose.ui.unit.dp
 
 // Import OBTSICarousel
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
-import de.darkovukic.android.onebigtwosmallimagescarousel.CarouselVisibility
+import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarouselVisibility
 // Import BitmapHelpers for generating sample Bitmaps
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
@@ -152,10 +152,10 @@ fun MyScreenWithCarousel() {
         // Callback when the visibility of the carousel changes
         onScrollVisibilityChanged = { state ->
             when (state) {
-                CarouselVisibility.START_VISIBLE -> { /* Carousel start visible */ }
-                CarouselVisibility.MIDDLE_VISIBLE -> { /* Carousel middle visible */ }
-                CarouselVisibility.END_VISIBLE -> { /* Carousel end visible */ }
-                CarouselVisibility.ALL_VISIBLE -> { /* Carousel completely visible/invisible */ }
+                OBTSICarouselVisibility.START_VISIBLE -> { /* Carousel start visible */ }
+                OBTSICarouselVisibility.MIDDLE_VISIBLE -> { /* Carousel middle visible */ }
+                OBTSICarouselVisibility.END_VISIBLE -> { /* Carousel end visible */ }
+                OBTSICarouselVisibility.ALL_VISIBLE -> { /* Carousel completely visible/invisible */ }
             }
         },
 
@@ -175,7 +175,7 @@ The `OBTSICarousel` offers several parameters for customization:
 *   `images`: `List<Bitmap>` - The list of bitmaps to display.
 *   `imageContentDescription`: `(index: Int, bitmap: Bitmap) -> String?` - Provides content descriptions for accessibility.
 *   `onItemClick`: `(index: Int) -> Unit` - Lambda invoked when an item is clicked.
-*   `onScrollVisibilityChanged`: `(CarouselVisibility) -> Unit` - Lambda invoked when the scroll visibility state changes.
+*   `onScrollVisibilityChanged`: `(OBTSICarouselVisibility) -> Unit` - Lambda invoked when the scroll visibility state changes.
 
 ### Layout and Spacing
 
@@ -192,7 +192,7 @@ The appearance of each individual item (the big one or the two small ones) can b
 
 ### Scroll Visibility States
 
-The `onScrollVisibilityChanged` callback provides a `CarouselVisibility` enum with the following states:
+The `onScrollVisibilityChanged` callback provides a `OBTSICarouselVisibility` enum with the following states:
 
 *   `START_VISIBLE`: The start of the carousel is fully visible, but the end is not.
 *   `MIDDLE_VISIBLE`: Neither the start nor the end is fully visible (scrolling through the middle).
