@@ -93,7 +93,7 @@ fun OBTSICarousel(
     itemArrangement: Arrangement.Horizontal = Arrangement.spacedBy(0.dp),
     itemContentScale: ContentScale = ContentScale.Crop,
     onScrollVisibilityChanged: (OBTSICarouselVisibility) -> Unit = {},
-    onItemClick: (index: Int) -> Unit = {}
+    onItemClick: ((index: Int) -> Unit)? = null
 ) {
     if (images.isEmpty()) {
         // When the list is empty, report ALL_VISIBLE and return.
@@ -140,10 +140,12 @@ fun OBTSICarousel(
                 // 1. Apply user's itemModifier (e.g., for padding, clip, background).
                 // 2. Then apply our core layout modifiers.
                 // 3. Finally, make it clickable. The ripple will be bounded by any .clip in itemModifier.
-                val finalItemModifier = itemModifier
-                    .then(layoutModifier)
-                    .clickable { onItemClick(startIndexForThisChunk) }
-
+                var finalItemModifier = itemModifier.then(layoutModifier)
+                onItemClick?.let { clickHandler ->
+                    finalItemModifier = finalItemModifier.clickable {
+                        clickHandler(startIndexForThisChunk)
+                    }
+                }
 
                 CarouselItem(
                     // Apply base modifiers first, then the user-provided modifier
@@ -173,9 +175,12 @@ fun OBTSICarousel(
                         // 1. Apply user's itemModifier.
                         // 2. Then apply our core layout modifiers.
                         // 3. Finally, make it clickable.
-                        val finalItemModifier = itemModifier
-                            .then(layoutModifier)
-                            .clickable { onItemClick(originalIndex) }
+                        var finalItemModifier = itemModifier.then(layoutModifier)
+                        onItemClick?.let { clickHandler ->
+                            finalItemModifier = finalItemModifier.clickable {
+                                clickHandler(originalIndex)
+                            }
+                        }
 
                         CarouselItem(
                             // Apply base modifiers first, then the user-provided modifier
