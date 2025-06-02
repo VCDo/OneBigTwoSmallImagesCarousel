@@ -60,14 +60,19 @@ sample app: `implementation(project(":library"))`.
 Here's a basic example of how to use `OBTSICarousel` in your Composable function. First, make sure
 you have a list of `Bitmap` objects ready.
 ```kotlin
-import android.content.Context
 import android.graphics.Bitmap
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -109,7 +114,7 @@ fun MyScreenWithCarousel() {
             .background(color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)),
 
         // The list of images to display
-        images = bitmaps,
+        images = imageBitmaps,
 
         // Lambda for handling image content descriptions
         imageContentDescription = { index, image -> "Image $index" },
