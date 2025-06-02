@@ -78,3 +78,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed CarouselVisibility to OBTSICarouselVisibility.
 - Fixed clip of OBTSICarousel items click effect.
 - Changed onItemClick parameter to nullable. This way, the items will be only clickable if an onItemClick callback is provided.
+
+## [0.3.2] - 2025-06-02
+
+### Changed
+- Changed default item styling to be more neutral.
+- Added multiple carousel examples to the sample app.
+- README files were updated.
