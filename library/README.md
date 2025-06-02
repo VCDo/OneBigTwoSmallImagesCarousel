@@ -179,7 +179,7 @@ The `OBTSICarousel` offers several parameters for customization:
 
 ### Layout and Spacing
 
-*   `contentPadding`: `PaddingValues` - Padding around the content of the `LazyRow`. Defaults to `PaddingValues(all = 12.dp)`.
+*   `contentPadding`: `PaddingValues` - Padding around the content of the `LazyRow`. Defaults to `PaddingValues(all = 0.dp)`.
 *   `itemArrangement`: `Arrangement.Horizontal` - Horizontal arrangement of items within the `LazyRow` (e.g., spacing between chunks). Defaults to `Arrangement.spacedBy(0.dp)`.
 
 ### Item Appearance (Highly Flexible)

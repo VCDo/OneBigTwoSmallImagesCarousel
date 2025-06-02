@@ -23,6 +23,7 @@ package de.darkovukic.android.onebigtwosmallimagescarousel.sample
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -35,6 +36,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,6 +57,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarouselVisibility
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
@@ -82,7 +85,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Content(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var currentVisibility by remember { mutableStateOf<OBTSICarouselVisibility?>(null) }
 
     Column(
         modifier = modifier
@@ -91,47 +93,71 @@ fun Content(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        Column(
             modifier = Modifier.padding(16.dp),
-            text = stringResource(R.string.this_project_demonstrates),
-            textAlign = TextAlign.Center
-        )
-        val shape = RoundedCornerShape(8.dp)
-        OBTSICarousel(
-            modifier = Modifier.height(300.dp),
-            images = List(9) {
-                BitmapHelpers.generateSampleBitmap(
-                    width = 200,
-                    height = 100,
-                    index = it
-                )
-            },
-            imageContentDescription = { index, _ -> "Image at index: $index" },
-            contentPadding = PaddingValues(12.dp),
-            itemModifier = Modifier
-                .padding(4.dp)
-                .clip(shape)
-                .background(Color.LightGray)
-                .border(BorderStroke(1.dp, Color.White), shape),
-            onScrollVisibilityChanged = { visibility ->
-                currentVisibility = visibility
-            }
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            showClickedOnMessage(
-                context = context,
-                itemNumber = it + 1
+            Text(
+                text = stringResource(R.string.this_app_demonstrates_the),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "OneBigTwoSmallImagesCarousel",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Text(
+                text = stringResource(R.string.library),
+                style = MaterialTheme.typography.titleMedium
             )
         }
-        Text(
-            text = when (currentVisibility) {
-                OBTSICarouselVisibility.START_VISIBLE -> stringResource(R.string.swipe_left_to_see_more)
-                OBTSICarouselVisibility.MIDDLE_VISIBLE -> stringResource(R.string.swipe_left_or_right_to_see_more)
-                OBTSICarouselVisibility.END_VISIBLE -> stringResource(R.string.swipe_right_to_see_more)
-                OBTSICarouselVisibility.ALL_VISIBLE -> stringResource(R.string.complete_carousel_visible)
-                else -> ""
-            },
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(16.dp)
+
+        val images = List(10) {
+            BitmapHelpers.generateSampleBitmap(
+                width = 200,
+                height = 100,
+                index = it
+            )
+        }
+        val carouselHeight = 150.dp
+        val onItemClick = { index: Int ->
+            showClickedOnMessage(
+                context = context,
+                itemNumber = index + 1
+            )
+        }
+
+        UsageExampleHolder(
+            itemModifier = Modifier,
+            carouselHeight = carouselHeight,
+            images = images,
+            title = stringResource(R.string.example_1_no_special_styling_specified),
+            onItemClick = onItemClick
+        )
+
+        UsageExampleHolder(
+            itemModifier = Modifier
+                .padding(all = 4.dp)
+                .clip(shape = RoundedCornerShape(8.dp))
+                .background(color = Color.Blue.copy(alpha = 0.2f)),
+            carouselHeight = carouselHeight,
+            images = images,
+            title = stringResource(R.string.example_2_google_maps_style_without_click_listener),
+        )
+
+        val shape = RoundedCornerShape(topStartPercent = 50, bottomEndPercent = 50)
+        UsageExampleHolder(
+            itemModifier = Modifier
+                .padding(vertical = 4.dp, horizontal = 6.dp)
+                .clip(shape = shape)
+                .border(
+                    shape = shape,
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+                )
+                .background(color = Color.Blue.copy(alpha = 0.2f)),
+            carouselHeight = carouselHeight,
+            images = images,
+            title = stringResource(R.string.example_3_custom_shape_and_border),
+            onItemClick = onItemClick
         )
     }
 }
@@ -145,6 +171,52 @@ private fun showClickedOnMessage(context: Context, itemNumber: Int) {
         ),
         Toast.LENGTH_SHORT
     ).show()
+}
+
+@Composable
+fun UsageExampleHolder(
+    itemModifier: Modifier?,
+    carouselHeight: Dp,
+    title: String,
+    onItemClick: ((index: Int) -> Unit)? = null,
+    images: List<Bitmap>
+) {
+    var currentVisibility by remember { mutableStateOf<OBTSICarouselVisibility?>(null) }
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            text = title,
+            textAlign = TextAlign.Start
+        )
+        OBTSICarousel(
+            modifier = Modifier.height(carouselHeight),
+            images = images,
+            imageContentDescription = { index, _ -> "Image at index: $index" },
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+            itemModifier = itemModifier ?: Modifier,
+            onScrollVisibilityChanged = { visibility ->
+                currentVisibility = visibility
+            },
+            onItemClick = onItemClick
+        )
+        Text(
+            modifier = Modifier.padding(start = 16.dp, top = 0.dp, end = 16.dp, bottom = 16.dp),
+            color = MaterialTheme.colorScheme.tertiary,
+            text = when (currentVisibility) {
+                OBTSICarouselVisibility.START_VISIBLE -> stringResource(R.string.swipe_left_to_see_more)
+                OBTSICarouselVisibility.MIDDLE_VISIBLE -> stringResource(R.string.swipe_left_or_right_to_see_more)
+                OBTSICarouselVisibility.END_VISIBLE -> stringResource(R.string.swipe_right_to_see_more)
+                OBTSICarouselVisibility.ALL_VISIBLE -> stringResource(R.string.complete_carousel_visible)
+                else -> ""
+            },
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Preview(

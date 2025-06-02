@@ -45,7 +45,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -65,11 +64,11 @@ import androidx.compose.ui.unit.dp
  * @param images The list of [Bitmap] objects to display in the carousel.
  * @param imageContentDescription A lambda that provides a content description for each image.
  * @param contentPadding [PaddingValues] to apply around the content of the underlying `LazyRow`.
- *            Defaults to `PaddingValues(all = 12.dp)`.
+ *            Defaults to `PaddingValues(all = 0.dp)`.
  * @param itemModifier The [Modifier] to be applied to each individual carousel item's container (`Box`).
  *            This allows for full customization of padding, shape, background, border, etc., for each item.
  *            Essential layout modifiers like `aspectRatio` and `clickable` are applied by the component itself
- *            before this user-provided modifier. Defaults to `Modifier`.
+ *            before this user-provided modifier. Defaults to `Modifier.padding(0.dp).background(Color.Gray).border(BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(0.dp))`.
  * @param itemArrangement Arrangement of the individual image items. Defaults to `spacedBy(0.dp)`.
  * @param itemContentScale The [ContentScale] to apply to the images.
  *            Defaults to `ContentScale.Crop`.
@@ -84,12 +83,11 @@ fun OBTSICarousel(
     modifier: Modifier = Modifier,
     images: List<Bitmap>,
     imageContentDescription: (index: Int, bitmap: Bitmap) -> String?,
-    contentPadding: PaddingValues = PaddingValues(all = 12.dp),
+    contentPadding: PaddingValues = PaddingValues(all = 0.dp),
     itemModifier: Modifier = Modifier
-        .padding(4.dp)
-        .clip(RoundedCornerShape(8.dp))
+        .padding(0.dp)
         .background(Color.Gray)
-        .border(BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(8.dp)),
+        .border(BorderStroke(0.dp, Color.Transparent), RoundedCornerShape(0.dp)),
     itemArrangement: Arrangement.Horizontal = Arrangement.spacedBy(0.dp),
     itemContentScale: ContentScale = ContentScale.Crop,
     onScrollVisibilityChanged: (OBTSICarouselVisibility) -> Unit = {},

@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">OBTSI Carousel Sample App</string>
-    <string name="this_project_demonstrates">This project demonstrates the \'OneBigTwoSmallImagesCarousel\' library</string>
+    <string name="app_name">OBTSICarousel Sample App</string>
+    <string name="this_app_demonstrates_the">This app demonstrates the</string>
+    <string name="library">library</string>
+    <string name="clicked_on_image">Clicked on %1$s. image</string>
     <string name="swipe_left_to_see_more">Swipe left to see more</string>
     <string name="swipe_left_or_right_to_see_more">Swipe left or right to see more</string>
     <string name="swipe_right_to_see_more">Swipe right to see more</string>
     <string name="complete_carousel_visible">Complete carousel visible</string>
-    <string name="clicked_on_image">Clicked on %1$s. image</string>
+    <string name="example_1_no_special_styling_specified">Example 1: No special styling specified</string>
+    <string name="example_2_google_maps_style_without_click_listener">Example 2: GoogleMaps-Style without click-listener</string>
+    <string name="example_3_custom_shape_and_border">Example 3: Custom shape and border</string>
 </resources>
