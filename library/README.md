@@ -62,16 +62,21 @@ you have a list of `Bitmap` objects ready.
 ```kotlin
 import android.content.Context
 import android.graphics.Bitmap
-import android.widget.Toast
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 
-// Import OBTSICarousel Composable
+// Import OBTSICarousel
 import de.darkovukic.android.onebigtwosmallimagescarousel.OBTSICarousel
+import de.darkovukic.android.onebigtwosmallimagescarousel.CarouselVisibility
 // Import BitmapHelpers for generating sample Bitmaps
 import de.darkovukic.android.onebigtwosmallimagescarousel.util.BitmapHelpers
 
