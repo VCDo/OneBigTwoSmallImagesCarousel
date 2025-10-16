@@ -85,3 +85,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed default item styling to be more neutral.
 - Added multiple carousel examples to the sample app.
 - README files were updated.
+
+## [0.3.3] - 2025-10-16
+
+### Fixed
+- OBTSICarouselVisibility will now update the state on screen orientation change.
