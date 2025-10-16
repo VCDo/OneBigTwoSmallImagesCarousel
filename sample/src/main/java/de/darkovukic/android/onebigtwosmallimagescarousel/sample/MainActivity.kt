@@ -131,7 +131,7 @@ fun Content(modifier: Modifier = Modifier) {
         }
 
         UsageExampleHolder(
-            itemModifier = Modifier,
+            modifier = Modifier,
             carouselHeight = carouselHeight,
             images = images,
             title = stringResource(R.string.example_1_no_special_styling_specified),
@@ -139,7 +139,7 @@ fun Content(modifier: Modifier = Modifier) {
         )
 
         UsageExampleHolder(
-            itemModifier = Modifier
+            modifier = Modifier
                 .padding(all = 4.dp)
                 .clip(shape = RoundedCornerShape(8.dp))
                 .background(color = Color.Blue.copy(alpha = 0.2f)),
@@ -150,7 +150,7 @@ fun Content(modifier: Modifier = Modifier) {
 
         val shape = RoundedCornerShape(topStartPercent = 50, bottomEndPercent = 50)
         UsageExampleHolder(
-            itemModifier = Modifier
+            modifier = Modifier
                 .padding(vertical = 4.dp, horizontal = 6.dp)
                 .clip(shape = shape)
                 .border(
@@ -179,7 +179,7 @@ private fun showClickedOnMessage(context: Context, itemNumber: Int) {
 
 @Composable
 fun UsageExampleHolder(
-    itemModifier: Modifier?,
+    modifier: Modifier?,
     carouselHeight: Dp,
     title: String,
     onItemClick: ((index: Int) -> Unit)? = null,
@@ -202,7 +202,7 @@ fun UsageExampleHolder(
             images = images,
             imageContentDescription = { index, _ -> "Image at index: $index" },
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-            itemModifier = itemModifier ?: Modifier,
+            itemModifier = modifier ?: Modifier,
             onScrollVisibilityChanged = { visibility ->
                 currentVisibility = visibility
             },
