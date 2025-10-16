@@ -26,10 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-
 
 /**
  * Defines the different visibility states of the carousel as it's scrolled.
@@ -78,116 +75,53 @@ internal fun CarouselVisibilityObserver(
     totalItemCount: Int,
     onScrollVisibilityChanged: (OBTSICarouselVisibility) -> Unit
 ) {
-    var currentVisibilityState by remember { mutableStateOf(OBTSICarouselVisibility.ALL_VISIBLE) }
-
-    val visibility by remember(totalItemCount) { // Depends on the number of items
+    // This derived state will automatically re-evaluate whenever the scroll state or item count changes.
+    val visibility: OBTSICarouselVisibility? by remember(lazyListState, totalItemCount) {
         derivedStateOf {
+            // If there are no items, the carousel is considered fully visible.
             if (totalItemCount == 0) {
-                OBTSICarouselVisibility.ALL_VISIBLE
-            } else {
-                val layoutInfo = lazyListState.layoutInfo
-                val visibleItemsInfo = layoutInfo.visibleItemsInfo
-
-                if (visibleItemsInfo.isEmpty()) {
-                    // If items exist (totalItemCount > 0) but none are visible yet (e.g., during initial layout)
-                    // It's often safer to maintain the current state or assume a default like START if scrollable.
-                    // Relying on derivedState to eventually stabilize is also an option.
-                    // For now, let's keep the current state, as it might briefly be empty during fast scrolls.
-                    // However, for an *initial* state, if totalItemCount > 0 and visibleItemsInfo is empty,
-                    // it's likely START_VISIBLE if scrollable, or ALL_VISIBLE if not (though this is complex to determine here).
-                    // Let's assume for the initial LaunchedEffect, if items exist but none are visible,
-                    // the derivedState will soon pick up the correct state.
-                    // For the *very first* emission if empty but should not be, we might want a default.
-                    // Let's refine this: if totalItemCount > 0 and visibleItemsInfo is empty, it could mean layout is not ready.
-                    // The derivedStateOf should handle this.
-                    // For this initial effect, we might default to what derivedStateOf would likely compute.
-                    // However, to be safe and avoid complex initial guesses, let's keep currentVisibilityState.
-                    // The derivedState will trigger the correct update soon.
-                    currentVisibilityState // Or perhaps calculate based on logic below if we assume layout is stable enough
-                } else {
-                    // visibleItemsInfo is NOT empty, and totalItemCount > 0
-                    val firstVisibleItem = visibleItemsInfo.first()
-                    val lastVisibleItem = visibleItemsInfo.last()
-
-                    val firstItemFullyVisible = firstVisibleItem.index == 0
-                            && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
-                    val lastItemFullyVisible = lastVisibleItem.index == totalItemCount - 1
-                            && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
-                    val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
-
-                    if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
-                        OBTSICarouselVisibility.ALL_VISIBLE
-                    } else if (firstItemFullyVisible && !lastItemFullyVisible) {
-                        OBTSICarouselVisibility.START_VISIBLE
-                    } else if (lastItemFullyVisible && !firstItemFullyVisible) {
-                        OBTSICarouselVisibility.END_VISIBLE
-                    } else if (allItemsVisibleInLayout) { // All items fit, but might be slightly scrolled (e.g., during snap)
-                        OBTSICarouselVisibility.ALL_VISIBLE
-                    } else {
-                        OBTSICarouselVisibility.MIDDLE_VISIBLE
-                    }
-                }
+                return@derivedStateOf OBTSICarouselVisibility.ALL_VISIBLE
             }
-        }
-    }
 
-    // Effect to call the callback when visibility changes
-    LaunchedEffect(visibility) {
-        if (currentVisibilityState != visibility) {
-            currentVisibilityState = visibility
-            onScrollVisibilityChanged(visibility)
-        }
-    }
-
-    LaunchedEffect(
-        Unit,
-        totalItemCount,
-        lazyListState
-    ) { // Add lazyListState to re-evaluate if it changes externally
-        val newVisibility = if (totalItemCount == 0) {
-            OBTSICarouselVisibility.ALL_VISIBLE
-        } else {
-            // At this point, totalItemCount > 0 is guaranteed.
             val layoutInfo = lazyListState.layoutInfo
             val visibleItemsInfo = layoutInfo.visibleItemsInfo
 
+            // If no items are currently visible in the layout, we can't determine the state.
             if (visibleItemsInfo.isEmpty()) {
-                // If items exist (totalItemCount > 0) but none are visible yet (e.g., during initial layout phase).
-                // It's tricky to determine the exact state before the first proper layout pass and derivedStateOf calculation.
-                // Maintaining currentVisibilityState or using a sensible default (like START_VISIBLE if scrollable) are options.
-                // For robustness in this initial effect, let's keep currentVisibilityState.
-                // The derivedStateOf and subsequent LaunchedEffect(visibility) should soon provide the accurate state.
-                currentVisibilityState
-            } else {
-                // visibleItemsInfo is NOT empty, and totalItemCount > 0.
-                // Re-evaluate the core visibility logic for the initial state.
-                val firstVisibleItem = visibleItemsInfo.first()
-                val lastVisibleItem = visibleItemsInfo.last()
+                return@derivedStateOf null
+            }
 
-                val firstItemFullyVisible = firstVisibleItem.index == 0
-                        && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
-                val lastItemFullyVisible = lastVisibleItem.index == totalItemCount - 1
-                        && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
-                val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
+            val firstVisibleItem = visibleItemsInfo.first()
+            val lastVisibleItem = visibleItemsInfo.last()
 
-                if (allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible) {
-                    OBTSICarouselVisibility.ALL_VISIBLE
-                } else if (firstItemFullyVisible && !lastItemFullyVisible) {
-                    OBTSICarouselVisibility.START_VISIBLE
-                } else if (lastItemFullyVisible && !firstItemFullyVisible) {
-                    OBTSICarouselVisibility.END_VISIBLE
-                } else if (allItemsVisibleInLayout) { // All items fit, but might be slightly scrolled (e.g., during snap)
-                    OBTSICarouselVisibility.ALL_VISIBLE
-                } else {
-                    OBTSICarouselVisibility.MIDDLE_VISIBLE
-                }
+            // Check if the very first item (index 0) is fully visible at the start of the viewport.
+            val firstItemFullyVisible = firstVisibleItem.index == 0
+                    && firstVisibleItem.offset >= layoutInfo.viewportStartOffset
+            // Check if the very last item is fully visible at the end of the viewport.
+            val lastItemFullyVisible = lastVisibleItem.index == totalItemCount - 1
+                    && (lastVisibleItem.offset + lastVisibleItem.size) <= layoutInfo.viewportEndOffset
+            // Check if all items in the list are currently rendered in the viewport.
+            val allItemsVisibleInLayout = visibleItemsInfo.size == totalItemCount
+
+            // Determine the overall visibility state based on the conditions above.
+            when {
+                // If all items are rendered and both the first and last are fully visible, the whole list is visible.
+                allItemsVisibleInLayout && firstItemFullyVisible && lastItemFullyVisible -> OBTSICarouselVisibility.ALL_VISIBLE
+                // If the first item is fully visible but the last one isn't, we're at the start.
+                firstItemFullyVisible && !lastItemFullyVisible -> OBTSICarouselVisibility.START_VISIBLE
+                // If the last item is fully visible but the first one isn't, we're at the end.
+                lastItemFullyVisible && !firstItemFullyVisible -> OBTSICarouselVisibility.END_VISIBLE
+                // If all items are rendered in the layout (for short lists), it's considered fully visible.
+                allItemsVisibleInLayout -> OBTSICarouselVisibility.ALL_VISIBLE
+                // Otherwise, we must be scrolling somewhere in the middle.
+                else -> OBTSICarouselVisibility.MIDDLE_VISIBLE
             }
         }
+    }
 
-        // Only update and call callback if the state has actually changed from its initial value or last set value
-        if (currentVisibilityState != newVisibility) {
-            currentVisibilityState = newVisibility
-            onScrollVisibilityChanged(newVisibility)
-        }
+    // This effect runs whenever the calculated `visibility` state changes.
+    LaunchedEffect(visibility) {
+        // When the visibility is not null, invoke the callback to notify the caller.
+        visibility?.let { onScrollVisibilityChanged(it) }
     }
 }
